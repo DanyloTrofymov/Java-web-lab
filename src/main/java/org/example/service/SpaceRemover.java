@@ -5,10 +5,7 @@ import org.example.view.ConsolePrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -64,7 +61,7 @@ public class SpaceRemover {
     private void removeSpaces(File file, String resultPath) throws FileNotFoundException {
 
         printer.print(file.getAbsolutePath() + "\n");
-        PrintWriter printWriter = new PrintWriter(resultPath + File.separator + file.getName());
+        PrintWriter printWriter = new PrintWriter(resultPath + File.separator + file.getName() + ' ' + UUID.randomUUID());
         Scanner scanner = new Scanner(file);
         int firstSpaces = 0;
         while (scanner.hasNextLine()) {

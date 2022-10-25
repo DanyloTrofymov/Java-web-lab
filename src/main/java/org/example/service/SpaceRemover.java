@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,6 +31,8 @@ public class SpaceRemover {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyy-HHmmss");
         String formattedDate = date.format(format);
         String resultPath = path + File.separator + "result-" + formattedDate;
+        File dir = new File(resultPath);
+        dir.mkdir();
 
         findAllFilesInDirectory(file, resultPath, executorService);
 
@@ -68,6 +71,7 @@ public class SpaceRemover {
             char prevSymb = Character.MIN_VALUE;
             String str = scanner.nextLine();
             char[] charArr = str.stripTrailing().toCharArray();
+            String newString = "";
             int tempFisrtSpacesCounter = firstSpaces;
             for (int i = 0; i < charArr.length; i++) {
                 char symbol = charArr[i];
@@ -87,7 +91,13 @@ public class SpaceRemover {
                 }
                 prevSymb = charArr[i];
             }
-            printWriter.println(charArr.toString());
+            for (char c : charArr) {
+                if (c != Character.MIN_VALUE) {
+                    newString += c;
+                }
+            }
+            //String newSring = charArr.toString();
+            printWriter.println(newString);
         }
         scanner.close();
         printWriter.close();

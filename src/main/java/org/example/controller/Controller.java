@@ -20,6 +20,7 @@ public class Controller {
             String dirPath = view.getPath();
             if (!validator.dirPathIsValid(dirPath)) {
                 printer.print(ConsolePrinter.pathDoesNotExists);
+                continue;
             }
             SpaceRemover spaceRemover = new SpaceRemover(dirPath, printer);
             try {
@@ -28,6 +29,7 @@ public class Controller {
             }
             catch (Exception e) {
                 printer.print(e.getMessage());
+                continue;
             }
             if(!view.wantToContinue()){
                 work = false;

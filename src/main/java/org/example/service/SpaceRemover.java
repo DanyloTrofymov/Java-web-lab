@@ -61,7 +61,9 @@ public class SpaceRemover {
     private void removeSpaces(File file, String resultPath) throws FileNotFoundException {
 
         printer.print(file.getAbsolutePath() + "\n");
-        PrintWriter printWriter = new PrintWriter(resultPath + File.separator + file.getName() + ' ' + UUID.randomUUID());
+        PrintWriter printWriter = new PrintWriter(resultPath + File.separator +
+        file.getName().replaceAll(".java", "") + '-' + UUID.randomUUID() + ".java");
+
         Scanner scanner = new Scanner(file);
         int firstSpaces = 0;
         while (scanner.hasNextLine()) {

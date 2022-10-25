@@ -26,16 +26,22 @@ public class SpaceRemover {
     public void remove() throws Exception {
         File file = new File(this.path);
         ExecutorService executorService = Executors.newCachedThreadPool();
-        findAllFilesInDirectory(file, executorService);
+        LocalDateTime date = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyy-HHmmss");
+        String formattedDate = date.format(format);
+        String resultPath = path + File.separator + "result-" + formattedDate;
+
+        findAllFilesInDirectory(file, resultPath, executorService);
+
         executorService.shutdown();
     }
 
-    private int findAllFilesInDirectory(File file, ExecutorService executorService) throws Exception {
+    private int findAllFilesInDirectory(File file, String resultPath, ExecutorService executorService) throws Exception {
         if (file.isDirectory()) {
             File[] allFiles = file.listFiles();
             List<Future<Integer>> allTasks = new ArrayList<>();
             for (var currentFile : allFiles) {
-                Callable<Integer> recursiveTask = () -> findAllFilesInDirectory(currentFile, executorService);
+                Callable<Integer> recursiveTask = () -> findAllFilesInDirectory(currentFile, resultPath, executorService);
                 Future<Integer> submit = executorService.submit(recursiveTask);
                 allTasks.add(submit);
             }
@@ -46,21 +52,16 @@ public class SpaceRemover {
             return result;
         }
         if (file.getName().endsWith(".java")) {
-            removeSpaces(file, path);
+            removeSpaces(file, resultPath);
         }
         return 0;
 
     }
 
-    private void removeSpaces(File file, String path) throws FileNotFoundException {
-        LocalDateTime date = LocalDateTime.now();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyy-HHmmss");
-        String formattedDate = date.format(format);
-        String resultPath = path + File.separator + "result-" + formattedDate + File.separator + file.getName();
-        PrintWriter printWriter = new PrintWriter(resultPath);
+    private void removeSpaces(File file, String resultPath) throws FileNotFoundException {
 
         printer.print(file.getAbsolutePath() + "\n");
-
+        PrintWriter printWriter = new PrintWriter(resultPath + File.separator + file.getName());
         Scanner scanner = new Scanner(file);
         int firstSpaces = 0;
         while (scanner.hasNextLine()) {
@@ -81,14 +82,14 @@ public class SpaceRemover {
                 if (symbol == '}') {
                     firstSpaces -= 4;
                 }
-                if (prevSymb == ' ' && symbol == ' ') {
-                    charArr[i] = Character.MIN_VALUE;
+                if (prevSymb == ' ' && symbol == ' ' && i > 0) {
+                    charArr[i - 1] = Character.MIN_VALUE;
                 }
                 prevSymb = charArr[i];
             }
             printWriter.println(charArr.toString());
         }
-        printWriter.close();
         scanner.close();
+        printWriter.close();
     }
 }

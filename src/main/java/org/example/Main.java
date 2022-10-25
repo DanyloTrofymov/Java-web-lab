@@ -5,7 +5,7 @@ import org.example.view.ConsolePrinter;
 import org.example.view.View;
 
 
-// D:\\Инивурситет\\Java web 2022\\EXAMPLES
+// D:\Инивурситет\Java web 2022\EXAMPLES
 public class Main {
     public static void main(String[] args) {
         ConsolePrinter printer = new ConsolePrinter();

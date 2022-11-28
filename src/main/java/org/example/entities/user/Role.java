@@ -10,11 +10,12 @@ public enum Role {
        if(value == null){
            return null;
        }
-       return switch (value) {
-           case "CASHER" -> CASHER;
-           case "SENOR_CASHER" -> SENOR_CASHER;
-           case "EXPERT" -> EXPERT;
+       return switch (value.toLowerCase()) {
+           case "casher" -> CASHER;
+           case "senior_casher" -> SENOR_CASHER;
+           case "expert" -> EXPERT;
            default -> null;
        };
+       
    }
 }

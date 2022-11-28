@@ -1,7 +1,8 @@
 package org.example.controllers.auth;
 
 import org.example.views.auth.LoginView;
-
+/*
+import org.example.services.auth.LoginService;
 public class LoginController {
     private final LoginView loginView;
     private final LoginService loginService;
@@ -24,3 +25,4 @@ public class LoginController {
         this.loginService = loginService;
     }
 }
+*/

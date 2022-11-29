@@ -1,6 +1,5 @@
 package org.example.repositories.dao;
 
-import org.example.entities.good.GoodType;
 import org.example.entities.user.User;
 import org.example.entities.user.UserRole;
 import org.example.exceptions.DatabaseException;
@@ -15,7 +14,7 @@ abstract public class AbstractUserService extends AbstractCRUD<User> {
         super(connectionManager);
     }
 
-    public List<User> findByRole (UserRole role) throws SQLException{
+    public List<User> findByRole (UserRole role){
         Connection dbConnection = null;
         List<User> users;
         try{
@@ -31,7 +30,7 @@ abstract public class AbstractUserService extends AbstractCRUD<User> {
         return users;
     };
 
-    public User findByUsername (String username) throws SQLException{
+    public User findByUsername (String username){
         Connection dbConnection = null;
         User user;
         try{

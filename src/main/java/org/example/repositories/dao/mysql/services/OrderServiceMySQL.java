@@ -102,7 +102,7 @@ public class OrderServiceMySQL extends AbstractOrderService {
     }
 
     @Override
-    protected List<Order> findByTypeInternal (OrderStatus status, Connection dbConnection) throws SQLException {
+    protected List<Order> findByStatusInternal (OrderStatus status, Connection dbConnection) throws SQLException {
         int statusId = getStatusId(status);
         List<Order> orders = new ArrayList<>();
         String sql = """

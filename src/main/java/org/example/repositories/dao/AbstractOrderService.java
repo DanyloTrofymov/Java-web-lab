@@ -10,17 +10,16 @@ import java.util.List;
 
 abstract public class AbstractOrderService extends AbstractCRUD<Order>{
 
-
     protected AbstractOrderService(AbstractConnectionManager connectionManager) {
         super(connectionManager);
     }
 
-    public List<Order> findByRole (OrderStatus status) throws SQLException{
+    public List<Order> findByStatus (OrderStatus status){
         Connection dbConnection = null;
         List<Order> orders;
         try{
             dbConnection = connectionManager.getConnection();
-            orders = findByTypeInternal(status, dbConnection);
+            orders = findByStatusInternal(status, dbConnection);
 
         } catch (SQLException e) {
             throw new DatabaseException(e);
@@ -31,5 +30,5 @@ abstract public class AbstractOrderService extends AbstractCRUD<Order>{
         return orders;
     };
 
-    abstract protected List<Order> findByTypeInternal (OrderStatus status, Connection dbConnection) throws SQLException;
+    abstract protected List<Order> findByStatusInternal (OrderStatus status, Connection dbConnection) throws SQLException;
 }

@@ -1,6 +1,5 @@
 package org.example.repositories.dao;
 
-
 import org.example.entities.good.Good;
 import org.example.entities.good.GoodType;
 import org.example.exceptions.DatabaseException;
@@ -11,12 +10,11 @@ import java.util.List;
 
 abstract public class AbstractGoodService extends AbstractCRUD<Good>{
 
-
     protected AbstractGoodService(AbstractConnectionManager connectionManager) {
         super(connectionManager);
     }
 
-    public List<Good> findByRole (GoodType type) throws SQLException{
+    public List<Good> findByType (GoodType type){
         Connection dbConnection = null;
         List<Good> orders;
         try{

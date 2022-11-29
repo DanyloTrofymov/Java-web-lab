@@ -9,22 +9,22 @@ public class RegisterView {
         System.out.println("REGISTRATION");
     }
     public String getUsername() {
-        System.out.println("enter your username and press enter: ");
+        System.out.println("Enter your username: ");
         return scanner.nextLine();
     }
 
     public String getPassword() {
-        System.out.println("enter your password and press enter: ");
+        System.out.println("Enter your password: ");
         return scanner.nextLine();
     }
 
     public String getFirstName() {
-        System.out.println("enter your first name and press enter: ");
+        System.out.println("Enter your first name: ");
         return scanner.nextLine();
     }
 
     public String getLastName() {
-        System.out.println("enter your last name and press enter: ");
+        System.out.println("Enter your last name: ");
         return scanner.nextLine();
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 public class OrderService {
     private final AbstractOrderService orderService;
 
-    public OrderService(AbstractOrderService service) { this.orderService = service; }
+    public OrderService(AbstractOrderService orderService) { this.orderService = orderService; }
 
     public void create(Order order) { orderService.create(order); }
 

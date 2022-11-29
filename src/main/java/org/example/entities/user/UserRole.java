@@ -1,12 +1,12 @@
 package org.example.entities.user;
 
-public enum Role {
+public enum UserRole {
 
     CASHER,
     SENOR_CASHER,
     EXPERT;
 
-   public static Role getRole(String value) {
+   public static UserRole getRole(String value) {
        if(value == null){
            return null;
        }

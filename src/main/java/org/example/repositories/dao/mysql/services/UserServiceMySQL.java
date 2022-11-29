@@ -1,6 +1,7 @@
 package org.example.repositories.dao.mysql.services;
 
-import org.example.entities.user.Role;
+import org.example.entities.good.Good;
+import org.example.entities.user.UserRole;
 import org.example.entities.user.User;
 import org.example.repositories.dao.AbstractDAO;
 import org.example.repositories.dao.mysql.ConnectionManagerMySQL;
@@ -14,9 +15,10 @@ import java.util.List;
 
 
 public class UserServiceMySQL extends AbstractDAO<User> {
-    public UserServiceMySQL(){
+    public UserServiceMySQL() {
         connectionManager = new ConnectionManagerMySQL();
     }
+
     @Override
     protected void createInternal(User user, Connection dbConnection) throws SQLException {
         int roleId = getRoleId(user.getRole());
@@ -107,6 +109,24 @@ public class UserServiceMySQL extends AbstractDAO<User> {
         return user;
     }
 
+    public List<User> findByRole (UserRole role, Connection dbConnection) throws SQLException {
+        int roleId = getRoleId(role);
+        List<User> users = new ArrayList<>();
+        String sql = """
+            SELECT * FROM `java_labs`.`user` WHERE `role_id` = ?
+            """;
+        PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
+        preparedStatement.setInt(1, roleId);
+        ResultSet result = preparedStatement.executeQuery();
+        while (result.next()) {
+            User user = setFields(result);
+            users.add(user);
+        }
+        connectionManager.closeStatement(preparedStatement);
+
+        return users;
+    }
+
     private User setFields(ResultSet result) throws SQLException {
         User user = new User();
 
@@ -120,7 +140,7 @@ public class UserServiceMySQL extends AbstractDAO<User> {
         return user;
     }
 
-    private int getRoleId(Role role) throws SQLException {
+    private int getRoleId(UserRole role) throws SQLException {
         Connection dbConnection = connectionManager.getConnection();
         String selectRole = """
             SELECT `id` FROM `java_labs`.`user_role` WHERE `role` = ?

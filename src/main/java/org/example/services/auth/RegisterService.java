@@ -1,8 +1,5 @@
 package org.example.services.auth;
 
-import org.example.entities.user.Role;
-import org.example.entities.user.User;
-
 /*public class RegisterService {
     private final UserRepository userRepository;
 

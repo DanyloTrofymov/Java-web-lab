@@ -1,7 +1,5 @@
 package org.example.controllers.auth;
 
-import org.example.entities.user.Role;
-import org.example.views.auth.RegisterView;
 /*
 import org.example.services.auth.RegisterService;
 public class RegisterController {

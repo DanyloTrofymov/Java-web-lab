@@ -17,7 +17,7 @@ public class GoodServiceMySQL extends AbstractDAO<Good> {
         connectionManager = new ConnectionManagerMySQL();
     }
     @Override
-    public void createInternal(Good good, Connection dbConnection) throws SQLException {
+    protected void createInternal(Good good, Connection dbConnection) throws SQLException {
         int typeId = getTypeId(good.getType());
         String sql = """
                 INSERT INTO `java_labs`.`good` (`name`, `type_id`, `price`) VALUES (?, ?, ?); 
@@ -32,7 +32,7 @@ public class GoodServiceMySQL extends AbstractDAO<Good> {
     }
 
     @Override
-    public void deleteInternal(int id, Connection dbConnection) throws SQLException {
+    protected void deleteInternal(int id, Connection dbConnection) throws SQLException {
         String sql = """
             DELETE FROM `good`
             WHERE `id` = ?;
@@ -44,7 +44,7 @@ public class GoodServiceMySQL extends AbstractDAO<Good> {
     }
 
     @Override
-    public void updateInternal(int id, Good newGood, Connection dbConnection) throws SQLException {
+    protected void updateInternal(int id, Good newGood, Connection dbConnection) throws SQLException {
         int typeId = getTypeId(newGood.getType());
         String sql = """
             UPDATE `good`
@@ -64,7 +64,7 @@ public class GoodServiceMySQL extends AbstractDAO<Good> {
     }
 
     @Override
-    public List<Good> findAllInternal(Connection dbConnection) throws SQLException {
+    protected List<Good> findAllInternal(Connection dbConnection) throws SQLException {
         List<Good> goods = new ArrayList<>();
         String sql = """
             SELECT `good`.`id`, `name`, `price`, `good_type`.`type` FROM `good`
@@ -82,7 +82,7 @@ public class GoodServiceMySQL extends AbstractDAO<Good> {
     }
 
     @Override
-    public Good findByIdInternal(int id, Connection dbConnection) throws SQLException {
+    protected Good findByIdInternal(int id, Connection dbConnection) throws SQLException {
         Good good = new Good();
         String sql = """
             SELECT `good`.`id`, `name`, `price`, `good_type`.`type` FROM `good`
@@ -98,6 +98,24 @@ public class GoodServiceMySQL extends AbstractDAO<Good> {
         connectionManager.closeStatement(preparedStatement);
 
         return good;
+    }
+
+    public List<Good> findByType (GoodType type, Connection dbConnection) throws SQLException {
+        int typeId = getTypeId(type);
+        List<Good> goods = new ArrayList<>();
+        String sql = """
+            SELECT * FROM `java_labs`.`good` WHERE `type_id` = ?
+            """;
+        PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
+        preparedStatement.setInt(1, typeId);
+        ResultSet result = preparedStatement.executeQuery();
+        while (result.next()) {
+            Good good = setFields(result);
+            goods.add(good);
+        }
+        connectionManager.closeStatement(preparedStatement);
+
+        return goods;
     }
 
     private Good setFields(ResultSet result) throws SQLException {

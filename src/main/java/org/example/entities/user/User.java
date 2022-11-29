@@ -70,7 +70,9 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
-
+    public void setRole(String role) {
+        this.role = Role.getRole(role);
+    }
     @Override
     public String toString() {
         return "User{" +

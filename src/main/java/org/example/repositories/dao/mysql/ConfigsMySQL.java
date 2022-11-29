@@ -1,6 +1,6 @@
 package org.example.repositories.dao.mysql;
 
-public class Configs {
+public class ConfigsMySQL {
     protected static String dbName = "java_labs";
     protected static String dbHost = "127.0.0.1";
     protected static String dbPort = "3306";

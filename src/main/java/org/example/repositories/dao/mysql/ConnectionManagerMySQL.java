@@ -1,15 +1,18 @@
 package org.example.repositories.dao.mysql;
 
+import org.example.repositories.dao.AbstractConnectionManager;
+
 import java.sql.*;
 
-import static org.example.repositories.dao.mysql.Configs.*;
+import static org.example.repositories.dao.mysql.ConfigsMySQL.*;
 
-public class ConnectionManager {
-    public static Connection getConnection(){
+public class ConnectionManagerMySQL extends AbstractConnectionManager {
+    @Override
+    public Connection getConnection(){
         Connection dbConnection = null;
         String connectionString = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             dbConnection = DriverManager.getConnection(connectionString, dbUser, dbPass);
         } catch (ClassNotFoundException e) {
             System.out.println("Driver not loaded");
@@ -19,16 +22,5 @@ public class ConnectionManager {
             e.printStackTrace();
         }
         return dbConnection;
-    }
-    public static void closeConnection(Connection conn){
-
-    }
-    public static void closeStatement(PreparedStatement statement){
-        if (statement != null)
-            try{
-                statement.close();
-            } catch (SQLException e){
-                e.printStackTrace();
-            }
     }
 }

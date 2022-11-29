@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CrudDao<T> {
 
-    T insert(T value);
+    void create(T value);
 
     void delete(int id);
 

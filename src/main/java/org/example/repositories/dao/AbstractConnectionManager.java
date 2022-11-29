@@ -8,14 +8,16 @@ import java.sql.SQLException;
 
 public abstract class AbstractConnectionManager {
     public abstract Connection getConnection();
-    public void closeConnection(Connection dbConnection){
+
+    public void closeConnection(Connection dbConnection) {
         if (dbConnection != null)
-            try{
+            try {
                 dbConnection.close();
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 throw new DatabaseException(e);
             }
     }
+
     public void closeStatement(PreparedStatement statement){
         if (statement != null)
             try{

@@ -1,9 +1,9 @@
 package org.example.repositories.dao.mysql.services;
 
-import org.example.entities.good.Good;
 import org.example.entities.user.UserRole;
 import org.example.entities.user.User;
-import org.example.repositories.dao.AbstractDAO;
+
+import org.example.repositories.dao.AbstractUserService;
 import org.example.repositories.dao.mysql.ConnectionManagerMySQL;
 
 import java.sql.Connection;
@@ -14,10 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserServiceMySQL extends AbstractDAO<User> {
-    public UserServiceMySQL() {
-        connectionManager = new ConnectionManagerMySQL();
-    }
+public class UserServiceMySQL extends AbstractUserService {
+    public UserServiceMySQL() { super(new ConnectionManagerMySQL()); }
 
     @Override
     protected void createInternal(User user, Connection dbConnection) throws SQLException {
@@ -109,7 +107,7 @@ public class UserServiceMySQL extends AbstractDAO<User> {
         return user;
     }
 
-    public List<User> findByRole (UserRole role, Connection dbConnection) throws SQLException {
+    protected List<User> findByRoleInternal (UserRole role, Connection dbConnection) throws SQLException {
         int roleId = getRoleId(role);
         List<User> users = new ArrayList<>();
         String sql = """
@@ -125,6 +123,24 @@ public class UserServiceMySQL extends AbstractDAO<User> {
         connectionManager.closeStatement(preparedStatement);
 
         return users;
+    }
+
+    protected User findByUsernameInternal(String username, Connection dbConnection) throws SQLException {
+        User user = new User();
+        String sql = """
+            SELECT `user`.`id`, `username`, `password`, `firstname`, `lastname`, `user_role`.`role` FROM `user`
+            INNER JOIN `user_role`
+            ON `user`.`role_id` = `user_role`.`id` WHERE `user`.`username` = ?;
+            """;
+        PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
+        preparedStatement.setString(1, username);
+        ResultSet result = preparedStatement.executeQuery();
+        while (result.next()) {
+            user = setFields(result);
+        }
+        connectionManager.closeStatement(preparedStatement);
+
+        return user;
     }
 
     private User setFields(ResultSet result) throws SQLException {

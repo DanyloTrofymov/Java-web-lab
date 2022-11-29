@@ -1,10 +1,9 @@
 package org.example.repositories.dao.mysql.services;
 
-import org.example.entities.good.Good;
-import org.example.entities.good.GoodType;
 import org.example.entities.order.Order;
 import org.example.entities.order.OrderStatus;
-import org.example.repositories.dao.AbstractDAO;
+import org.example.repositories.dao.AbstractCRUD;
+import org.example.repositories.dao.AbstractOrderService;
 import org.example.repositories.dao.mysql.ConnectionManagerMySQL;
 
 import java.sql.Connection;
@@ -14,9 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderServiceMySQL extends AbstractDAO<Order> {
+public class OrderServiceMySQL extends AbstractOrderService {
     public OrderServiceMySQL(){
-        connectionManager = new ConnectionManagerMySQL();
+        super(new ConnectionManagerMySQL());
     }
     @Override
     protected void createInternal(Order order, Connection dbConnection) throws SQLException {
@@ -102,7 +101,8 @@ public class OrderServiceMySQL extends AbstractDAO<Order> {
         return order;
     }
 
-    public List<Order> findByType (OrderStatus status, Connection dbConnection) throws SQLException {
+    @Override
+    protected List<Order> findByTypeInternal (OrderStatus status, Connection dbConnection) throws SQLException {
         int statusId = getStatusId(status);
         List<Order> orders = new ArrayList<>();
         String sql = """

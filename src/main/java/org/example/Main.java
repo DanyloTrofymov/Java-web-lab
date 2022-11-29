@@ -1,14 +1,6 @@
 package org.example;
 
-import org.example.entities.order.Order;
-import org.example.entities.order.OrderStatus;
-import org.example.entities.user.User;
-import org.example.entities.user.UserRole;
-import org.example.repositories.dao.mysql.services.GoodServiceMySQL;
-import org.example.repositories.dao.mysql.services.OrderServiceMySQL;
 import org.example.repositories.dao.mysql.services.UserServiceMySQL;
-
-import java.util.List;
 
 public class Main {
     public static void main(String[] args){
@@ -63,7 +55,5 @@ public class Main {
         //orderMySQL.update(3, order);
 
         //orderMySQL.delete(5);
-
-
     }
 }

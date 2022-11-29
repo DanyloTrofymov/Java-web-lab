@@ -2,7 +2,8 @@ package org.example.repositories.dao.mysql.services;
 
 import org.example.entities.good.Good;
 import org.example.entities.good.GoodType;
-import org.example.repositories.dao.AbstractDAO;
+import org.example.repositories.dao.AbstractCRUD;
+import org.example.repositories.dao.AbstractGoodService;
 import org.example.repositories.dao.mysql.ConnectionManagerMySQL;
 
 import java.sql.Connection;
@@ -12,9 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoodServiceMySQL extends AbstractDAO<Good> {
+public class GoodServiceMySQL extends AbstractGoodService {
     public GoodServiceMySQL(){
-        connectionManager = new ConnectionManagerMySQL();
+        super(new ConnectionManagerMySQL());
     }
     @Override
     protected void createInternal(Good good, Connection dbConnection) throws SQLException {
@@ -100,7 +101,8 @@ public class GoodServiceMySQL extends AbstractDAO<Good> {
         return good;
     }
 
-    public List<Good> findByType (GoodType type, Connection dbConnection) throws SQLException {
+    @Override
+    public List<Good> findByTypeInternal (GoodType type, Connection dbConnection) throws SQLException {
         int typeId = getTypeId(type);
         List<Good> goods = new ArrayList<>();
         String sql = """

@@ -1,4 +1,4 @@
-package org.example.entities.report;
+package report;
 
 public enum ReportType {
     X,

@@ -1,11 +1,7 @@
 package org.example;
 
-import org.example.repositories.dao.mysql.services.GoodServiceMySQL;
-import org.example.repositories.dao.mysql.services.OrderServiceMySQL;
 import org.example.repositories.dao.mysql.services.UserServiceMySQL;
-import org.example.services.ReportService;
-import org.example.views.auth.RegisterView;
-import org.example.views.report.ReportView;
+import org.example.views.auth.AuthView;
 
 public class Main {
     public static void main(String[] args){
@@ -62,11 +58,12 @@ public class Main {
         //orderMySQL.delete(5);
 
 
-        GoodServiceMySQL goodMySQL = new GoodServiceMySQL();
-        OrderServiceMySQL orderMySQL = new OrderServiceMySQL();
-        ReportView view = new ReportView();
-        ReportService service = new ReportService(orderMySQL, goodMySQL, view);
-        service.report_X();
-
+        //GoodServiceMySQL goodMySQL = new GoodServiceMySQL();
+        //OrderServiceMySQL orderMySQL = new OrderServiceMySQL();
+        //ReportView view = new ReportView();
+        //ReportService service = new ReportService(orderMySQL, goodMySQL, view);
+        //service.report_X();
+        AuthView view = new AuthView();
+        view.chooseAction();
     }
 }

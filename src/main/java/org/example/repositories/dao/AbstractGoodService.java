@@ -16,10 +16,10 @@ abstract public class AbstractGoodService extends AbstractCRUD<Good>{
 
     public List<Good> findByType (GoodType type){
         Connection dbConnection = null;
-        List<Good> orders;
+        List<Good> goods;
         try{
             dbConnection = connectionManager.getConnection();
-            orders = findByTypeInternal(type, dbConnection);
+            goods = findByTypeInternal(type, dbConnection);
 
         } catch (SQLException e) {
             throw new DatabaseException(e);
@@ -27,8 +27,25 @@ abstract public class AbstractGoodService extends AbstractCRUD<Good>{
         finally {
             connectionManager.closeConnection(dbConnection);
         }
-        return orders;
-    };
+        return goods;
+    }
 
+    public Good findByName (String name){
+        Connection dbConnection = null;
+        Good good;
+        try{
+            dbConnection = connectionManager.getConnection();
+            good = findByNameInternal(name, dbConnection);
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
+        finally {
+            connectionManager.closeConnection(dbConnection);
+        }
+        return good;
+    }
+
+    abstract protected Good findByNameInternal (String name, Connection dbConnection) throws SQLException;
     abstract protected List<Good> findByTypeInternal (GoodType type, Connection dbConnection) throws SQLException;
 }

@@ -25,6 +25,6 @@ public class ReportView {
         for (GoodType type : countOfTypes) {
             System.out.println(countOfTypes + ": " + Collections.frequency(countOfTypes, type));
         }
-        System.out.println("\nThe most popular caterory is: " + maxOccurredElement);
+        System.out.println("\nThe most popular category is: " + maxOccurredElement);
     }
 }

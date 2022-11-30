@@ -15,11 +15,11 @@ public class OrderService {
 
     public List<Order> findAll() { return orderService.findAll(); }
 
-    public Order findById(int id) { return orderService.findById(id); }
+    public Order findById(String id) { return orderService.findById(id); }
 
-    public void update(int id, Order order) { orderService.update(id, order); }
+    public void update(String id, Order order) { orderService.update(id, order); }
 
-    public void delete(int id) { orderService.delete(id); }
+    public void delete(String id) { orderService.delete(id); }
 
     public List<Order> findByStatus(OrderStatus order) { return orderService.findByStatus(order); }
 

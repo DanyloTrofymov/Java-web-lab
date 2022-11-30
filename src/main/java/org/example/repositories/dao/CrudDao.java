@@ -1,4 +1,4 @@
-package org.example.repositories.dao.cruddao;
+package org.example.repositories.dao;
 
 import org.example.entities.user.User;
 
@@ -8,12 +8,12 @@ public interface CrudDao<T> {
 
     void create(T value);
 
-    void delete(int id);
+    void delete(String id);
 
-    void update(int id, T newValue);
+    void update(String id, T newValue);
 
     List<T> findAll();
 
-    T findById(int id);
+    T findById(String id);
 
 }

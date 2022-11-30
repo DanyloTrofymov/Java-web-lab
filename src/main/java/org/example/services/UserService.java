@@ -15,11 +15,11 @@ public class UserService {
 
     public List<User> findAll() { return userService.findAll(); }
 
-    public User findById(int id) { return userService.findById(id); }
+    public User findById(String id) { return userService.findById(id); }
 
-    public void update(int id, User user) { userService.update(id, user); }
+    public void update(String id, User user) { userService.update(id, user); }
 
-    public void delete(int id) { userService.delete(id); }
+    public void delete(String id) { userService.delete(id); }
 
     public List<User> findByRole (UserRole role) { return userService.findByRole(role); }
 

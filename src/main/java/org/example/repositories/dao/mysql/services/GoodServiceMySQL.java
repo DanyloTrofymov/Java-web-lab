@@ -2,7 +2,6 @@ package org.example.repositories.dao.mysql.services;
 
 import org.example.entities.good.Good;
 import org.example.entities.good.GoodType;
-import org.example.repositories.dao.AbstractCRUD;
 import org.example.repositories.dao.AbstractGoodService;
 import org.example.repositories.dao.mysql.ConnectionManagerMySQL;
 
@@ -33,19 +32,19 @@ public class GoodServiceMySQL extends AbstractGoodService {
     }
 
     @Override
-    protected void deleteInternal(int id, Connection dbConnection) throws SQLException {
+    protected void deleteInternal(String id, Connection dbConnection) throws SQLException {
         String sql = """
             DELETE FROM `good`
             WHERE `id` = ?;
             """;
         PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
-        preparedStatement.setInt(1, id);
+        preparedStatement.setString(1, id);
         preparedStatement.executeUpdate();
         connectionManager.closeStatement(preparedStatement);
     }
 
     @Override
-    protected void updateInternal(int id, Good newGood, Connection dbConnection) throws SQLException {
+    protected void updateInternal(String id, Good newGood, Connection dbConnection) throws SQLException {
         int typeId = getTypeId(newGood.getType());
         String sql = """
             UPDATE `good`
@@ -59,7 +58,7 @@ public class GoodServiceMySQL extends AbstractGoodService {
         preparedStatement.setString(1, newGood.getName());
         preparedStatement.setInt(2, typeId);
         preparedStatement.setFloat(3, newGood.getPrice());
-        preparedStatement.setInt(4, id);
+        preparedStatement.setString(4, id);
         preparedStatement.executeUpdate();
         connectionManager.closeStatement(preparedStatement);
     }
@@ -83,7 +82,7 @@ public class GoodServiceMySQL extends AbstractGoodService {
     }
 
     @Override
-    protected Good findByIdInternal(int id, Connection dbConnection) throws SQLException {
+    protected Good findByIdInternal(String id, Connection dbConnection) throws SQLException {
         Good good = new Good();
         String sql = """
             SELECT `good`.`id`, `name`, `price`, `good_type`.`type` FROM `good`
@@ -91,7 +90,7 @@ public class GoodServiceMySQL extends AbstractGoodService {
             ON `good`.`type_id` = `good_type`.`id` WHERE `good`.`id` = ?;
             """;
         PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
-        preparedStatement.setInt(1, id);
+        preparedStatement.setString(1, id);
         ResultSet result = preparedStatement.executeQuery();
         while (result.next()) {
             good = setFields(result);
@@ -119,11 +118,27 @@ public class GoodServiceMySQL extends AbstractGoodService {
 
         return goods;
     }
+    @Override
+    public Good findByNameInternal (String name, Connection dbConnection) throws SQLException {
+        Good good = new Good();
+        String sql = """
+            SELECT * FROM `java_labs`.`good` WHERE `name` = ?
+            """;
+        PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
+        preparedStatement.setString(1, name);
+        ResultSet result = preparedStatement.executeQuery();
+        while (result.next()) {
+            good = setFields(result);
+        }
+        connectionManager.closeStatement(preparedStatement);
+
+        return good;
+    }
 
     private Good setFields(ResultSet result) throws SQLException {
         Good good = new Good();
 
-        good.setId(result.getInt("id"));
+        good.setId(result.getString("id"));
         good.setName(result.getString("name"));
         good.setPrice(result.getInt("price"));
         good.setType(result.getString("type"));

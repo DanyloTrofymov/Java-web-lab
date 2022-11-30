@@ -1,9 +1,10 @@
 package org.example.entities.user;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class User {
-    private int id;
+    private String id;
     
     private String username;
 
@@ -15,7 +16,7 @@ public class User {
 
     private UserRole role;
 
-    public User(int id, String username, String password, String firstname, String lastname, UserRole role) {
+    public User(String id, String username, String password, String firstname, String lastname, UserRole role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -25,6 +26,7 @@ public class User {
     }
 
     public User(String username, String password, String firstname, String lastname, UserRole role) {
+        this.id = UUID.randomUUID().toString();
         this.username = username;
         this.password = password;
         this.firstname = firstname;
@@ -35,16 +37,12 @@ public class User {
     public User() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
     public String getUsername() {
         return username;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getPassword() {
@@ -61,6 +59,10 @@ public class User {
 
     public UserRole getRole() {
         return role;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setUsername(String username) {
@@ -87,11 +89,11 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", firstName='" + firstname + '\'' +
-                ", lastName='" + lastname + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
                 ", role=" + role +
                 '}';
     }

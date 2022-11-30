@@ -1,9 +1,10 @@
 package org.example.entities.good;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class Good {
-    private int id;
+    private String id;
 
     private String name;
 
@@ -11,35 +12,43 @@ public class Good {
 
     private float price;
 
-    public Good(int id, String name, GoodType type, float price) {
+    private float amount;
+
+    public Good(String id, String name, GoodType type, float price, float amount) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.price = price;
+        this.amount = amount;
     }
 
-    public Good(String name, GoodType type, float price) {
+    public Good(String name, GoodType type, float price, float onStorage) {
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.type = type;
         this.price = price;
+        this.amount = onStorage;
     }
 
-    public Good(int id, String name, float price) {
+    public Good(String id, String name, float price, float onStorage) {
         this.id = id;
         this.name = name;
         this.type = GoodType.OTHER;
         this.price = price;
+        this.amount = onStorage;
     }
 
-    public Good(String name, float price) {
+    public Good(String name, float price, float onStorage) {
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.type = GoodType.OTHER;
         this.price = price;
+        this.amount = onStorage;
     }
 
     public Good() {};
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -55,7 +64,9 @@ public class Good {
         return price;
     }
 
-    public void setId(int id) {
+    public float getAmount() { return amount; }
+
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -75,13 +86,16 @@ public class Good {
         this.price = price;
     }
 
+    public void setAmount(float amount) { this.amount = amount; }
+
     @Override
     public String toString() {
         return "Good{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", price=" + price +
+                ", amount=" + amount +
                 '}';
     }
 
@@ -90,11 +104,11 @@ public class Good {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Good good = (Good) o;
-        return id == good.id && Float.compare(good.price, price) == 0 && Objects.equals(name, good.name) && type == good.type;
+        return id == good.id && Float.compare(good.price, price) == 0 && Float.compare(good.amount, amount) == 0 && name.equals(good.name) && type == good.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, type, price);
+        return Objects.hash(id, name, type, price, amount);
     }
 }

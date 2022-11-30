@@ -35,19 +35,19 @@ public class UserServiceMySQL extends AbstractUserService {
     }
 
     @Override
-    protected void deleteInternal(int id, Connection dbConnection) throws SQLException {
+    protected void deleteInternal(String id, Connection dbConnection) throws SQLException {
         String sql = """
             DELETE FROM `user`
             WHERE `id` = ?;
             """;
         PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
-        preparedStatement.setInt(1, id);
+        preparedStatement.setString(1, id);
         preparedStatement.executeUpdate();
         connectionManager.closeStatement(preparedStatement);
     }
 
     @Override
-    protected void updateInternal(int id, User newUser, Connection dbConnection) throws SQLException {
+    protected void updateInternal(String id, User newUser, Connection dbConnection) throws SQLException {
         int roleId = getRoleId(newUser.getRole());
         String sql = """
             UPDATE `user`
@@ -65,7 +65,7 @@ public class UserServiceMySQL extends AbstractUserService {
         preparedStatement.setString(3, newUser.getFirstname());
         preparedStatement.setString(4, newUser.getLastname());
         preparedStatement.setInt(5, roleId);
-        preparedStatement.setInt(6, id);
+        preparedStatement.setString(6, id);
         preparedStatement.executeUpdate();
         connectionManager.closeStatement(preparedStatement);
     }
@@ -89,7 +89,7 @@ public class UserServiceMySQL extends AbstractUserService {
     }
 
     @Override
-    protected User findByIdInternal(int id, Connection dbConnection) throws SQLException {
+    protected User findByIdInternal(String id, Connection dbConnection) throws SQLException {
         User user = new User();
         String sql = """
             SELECT `user`.`id`, `username`, `password`, `firstname`, `lastname`, `user_role`.`role` FROM `user`
@@ -97,7 +97,7 @@ public class UserServiceMySQL extends AbstractUserService {
             ON `user`.`role_id` = `user_role`.`id` WHERE `user`.`id` = ?;
             """;
         PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
-        preparedStatement.setInt(1, id);
+        preparedStatement.setString(1, id);
         ResultSet result = preparedStatement.executeQuery();
         while (result.next()) {
             user = setFields(result);
@@ -146,7 +146,7 @@ public class UserServiceMySQL extends AbstractUserService {
     private User setFields(ResultSet result) throws SQLException {
         User user = new User();
 
-        user.setId(result.getInt("id"));
+        user.setId(result.getString("id"));
         user.setFirstname(result.getString("firstname"));
         user.setLastname(result.getString("lastname"));
         user.setRole(result.getString("role"));

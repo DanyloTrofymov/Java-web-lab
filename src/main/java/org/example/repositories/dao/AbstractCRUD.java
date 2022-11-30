@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public abstract class AbstractCRUD<T> implements org.example.repositories.dao.cruddao.CrudDao<T> {
+public abstract class AbstractCRUD<T> implements CrudDao<T> {
     protected AbstractConnectionManager connectionManager;
 
     protected AbstractCRUD(AbstractConnectionManager connectionManager) {
@@ -44,7 +44,7 @@ public abstract class AbstractCRUD<T> implements org.example.repositories.dao.cr
         return list;
     }
 
-    public T findById(int id) {
+    public T findById(String id) {
         Connection dbConnection = null;
         T object;
         try {
@@ -59,7 +59,7 @@ public abstract class AbstractCRUD<T> implements org.example.repositories.dao.cr
         return object;
     }
 
-    public void update(int id, T t) {
+    public void update(String id, T t) {
         Connection dbConnection = null;
         try {
             dbConnection = connectionManager.getConnection();
@@ -71,7 +71,7 @@ public abstract class AbstractCRUD<T> implements org.example.repositories.dao.cr
         }
     }
 
-    public void delete(int id) {
+    public void delete(String id) {
         Connection dbConnection = null;
         try {
             dbConnection = connectionManager.getConnection();
@@ -86,11 +86,11 @@ public abstract class AbstractCRUD<T> implements org.example.repositories.dao.cr
 
     protected abstract void createInternal(T value, Connection connection) throws SQLException;
 
-    protected abstract void deleteInternal(int id, Connection connection) throws SQLException;
+    protected abstract void deleteInternal(String id, Connection connection) throws SQLException;
 
-    protected abstract void updateInternal(int id, T newValue, Connection connection) throws SQLException;
+    protected abstract void updateInternal(String id, T newValue, Connection connection) throws SQLException;
 
     protected abstract List<T> findAllInternal(Connection connection) throws SQLException;
 
-    protected abstract T findByIdInternal(int id, Connection connection) throws SQLException;
+    protected abstract T findByIdInternal(String id, Connection connection) throws SQLException;
 }

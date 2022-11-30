@@ -23,12 +23,11 @@ public class OrderServiceMySQL extends AbstractOrderService {
     protected void createInternal(Order order, Connection dbConnection) throws SQLException {
         int statusId = getStatusId(order.getStatus());
         String sql = """
-            INSERT INTO `java_labs`.`order` (`buyer_name`, `status_id`, `total_price`) VALUES (?, ?, ?);
+            INSERT INTO `java_labs`.`order` (`buyer_name`, `status_id`) VALUES (?, ?, ?);
             """;
         PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
         preparedStatement.setString(1, order.getBuyerName());
         preparedStatement.setInt(2, statusId);
-        preparedStatement.setFloat(3, order.getTotalPrice());
         preparedStatement.executeUpdate();
 
         connectionManager.closeStatement(preparedStatement);
@@ -57,14 +56,12 @@ public class OrderServiceMySQL extends AbstractOrderService {
             SET
             `buyer_name` = ?, 
             `status_id` = ?,
-            `total_price` = ?
             WHERE `id` = ?;
             """;
         PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
         preparedStatement.setString(1, newOrder.getBuyerName());
         preparedStatement.setInt(2, statusId);
-        preparedStatement.setFloat(3, newOrder.getTotalPrice());
-        preparedStatement.setString(4, id);
+        preparedStatement.setString(3, id);
         preparedStatement.executeUpdate();
         connectionManager.closeStatement(preparedStatement);
 
@@ -76,7 +73,7 @@ public class OrderServiceMySQL extends AbstractOrderService {
     protected List<Order> findAllInternal(Connection dbConnection) throws SQLException {
         List<Order> orders = new ArrayList<>();
         String sql = """
-            SELECT `order`.`id`, `buyer_name`, `status_id`, `total_price`, `order_status`.`status` FROM `order`
+            SELECT `order`.`id`, `buyer_name`, `status_id`, `order_status`.`status` FROM `order`
             INNER JOIN `order_status`
             ON `order`.`status_id` = `order_status`.`id`;
             """;
@@ -95,7 +92,7 @@ public class OrderServiceMySQL extends AbstractOrderService {
     protected Order findByIdInternal(String id, Connection dbConnection) throws SQLException {
         Order order = new Order();
         String sql = """
-            SELECT `order`.`id`, `buyer_name`, `status_id`, `total_price`, `order_status`.`status` FROM `order`
+            SELECT `order`.`id`, `buyer_name`, `status_id`, `order_status`.`status` FROM `order`
             INNER JOIN `order_status`
             ON `order`.`status_id` = `order_status`.`id`  WHERE `order`.`id` = ?;
             """;
@@ -185,7 +182,6 @@ public class OrderServiceMySQL extends AbstractOrderService {
 
         order.setId(result.getString("id"));
         order.setBuyerName(result.getString("buyer_name"));
-        order.setTotalPrice(result.getInt("total_price"));
         order.setStatus(result.getString("status"));
         order.setGoods(findGoods(order.getId(), dbConnection));
 

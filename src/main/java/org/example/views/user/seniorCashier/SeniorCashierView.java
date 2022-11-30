@@ -1,10 +1,10 @@
-package org.example.views.user.seniorCasher;
+package org.example.views.user.seniorCashier;
 
 import org.example.views.user.GeneralUserView;
 
 import java.util.Scanner;
 
-public class SeniorCasherUserView extends GeneralUserView {
+public class SeniorCashierView extends GeneralUserView {
 
     private final Scanner scanner = new Scanner(System.in);
 

@@ -6,7 +6,7 @@ import org.example.views.user.GeneralUserView;
 import java.util.List;
 import java.util.Scanner;
 
-public class ExpertUserView extends GeneralUserView {
+public class ExpertView extends GeneralUserView {
     private final Scanner scanner = new Scanner(System.in);
 
     public int chooseAction() {

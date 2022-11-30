@@ -14,11 +14,11 @@ public class AuthView {
         System.out.println("Choose action:");
         do{
             System.out.println("Enter number\n1: Login\n2: Register\n");
-            String line = scanner.nextLine();
-            if (line.equals("1")) {
+            int line = scanner.nextInt();
+            if (line == 1) {
                 action = AuthAction.LOGIN;
             }
-            if (line.equals("2")) {
+            if (line == 2) {
                 action = AuthAction.REGISTER;
             }
         } while (action == null);
@@ -58,11 +58,11 @@ public class AuthView {
         System.out.println("Enter your role: ");
         do{
             System.out.println("Enter number \n1: Casher\n 2: Senior casher \n 3: Expert");
-            String line = scanner.nextLine();
+            int line = scanner.nextInt();
             switch (line) {
-                case "1" -> role = UserRole.CASHER;
-                case "2" -> role = UserRole.SENOR_CASHER;
-                case "3" -> role = UserRole.EXPERT;
+                case 1 -> role = UserRole.CASHER;
+                case 2 -> role = UserRole.SENOR_CASHER;
+                case 3 -> role = UserRole.EXPERT;
                 default -> role = null;
             }
         } while (role == null);

@@ -6,7 +6,7 @@ public class GeneralUserView {
 
     private final Scanner scanner = new Scanner(System.in);
 
-    public String getName(){
+    public String getGoodName(){
         System.out.println("Enter good name: ");
         return scanner.nextLine();
     }
@@ -27,5 +27,25 @@ public class GeneralUserView {
     public float getQuantity(){
         System.out.println("Enter quantity: ");
         return scanner.nextFloat();
+    }
+
+    public void illegalQuantity(){
+        System.out.println("Quantity must be a float number that greater then  0: ");
+    }
+
+    public boolean wantToContinue(){
+        do{
+            System.out.println("Do you want to continue? (Y/N): ");
+            String line = scanner.nextLine().toLowerCase();
+            switch (line){
+                case "y" -> {
+                    return true;
+                }
+                case "n" -> {
+                    return false;
+                }
+            }
+        }
+        while(true);
     }
 }

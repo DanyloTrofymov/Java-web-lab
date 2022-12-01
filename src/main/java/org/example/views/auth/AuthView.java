@@ -2,11 +2,12 @@ package org.example.views.auth;
 
 import org.example.controllers.auth.AuthAction;
 import org.example.entities.user.UserRole;
+import org.example.views.MainView;
 
 import java.util.Objects;
 import java.util.Scanner;
 
-public class AuthView {
+public class AuthView extends MainView {
     private final Scanner scanner = new Scanner(System.in);
 
     public AuthAction chooseAction() {

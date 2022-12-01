@@ -23,11 +23,12 @@ public class OrderServiceMySQL extends AbstractOrderService {
     protected void createInternal(Order order, Connection dbConnection) throws SQLException {
         int statusId = getStatusId(order.getStatus());
         String sql = """
-            INSERT INTO `java_labs`.`order` (`buyer_name`, `status_id`) VALUES (?, ?, ?);
+            INSERT INTO `java_labs`.`order` (`id`, `buyer_name`, `status_id`) VALUES (?, ?, ?);
             """;
         PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
-        preparedStatement.setString(1, order.getBuyerName());
-        preparedStatement.setInt(2, statusId);
+        preparedStatement.setString(1, order.getId());
+        preparedStatement.setString(2, order.getBuyerName());
+        preparedStatement.setInt(3, statusId);
         preparedStatement.executeUpdate();
 
         connectionManager.closeStatement(preparedStatement);
@@ -55,7 +56,7 @@ public class OrderServiceMySQL extends AbstractOrderService {
             UPDATE `order`
             SET
             `buyer_name` = ?, 
-            `status_id` = ?,
+            `status_id` = ?
             WHERE `id` = ?;
             """;
         PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);

@@ -21,14 +21,15 @@ public class UserServiceMySQL extends AbstractUserService {
     protected void createInternal(User user, Connection dbConnection) throws SQLException {
         int roleId = getRoleId(user.getRole());
         String sql = """
-            INSERT INTO `java_labs`.`user` (`username`, `password`, `firstname`, `lastname`, `role_id`) VALUES (?, ?, ?, ?, ?)
+            INSERT INTO `java_labs`.`user` (`id`, `username`, `password`, `firstname`, `lastname`, `role_id`) VALUES (?, ?, ?, ?, ?, ?)
             """;
         PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
-        preparedStatement.setString(1, user.getUsername());
-        preparedStatement.setString(2, user.getPassword());
-        preparedStatement.setString(3, user.getFirstname());
-        preparedStatement.setString(4, user.getLastname());
-        preparedStatement.setInt(5, roleId);
+        preparedStatement.setString(1, user.getId());
+        preparedStatement.setString(2, user.getUsername());
+        preparedStatement.setString(3, user.getPassword());
+        preparedStatement.setString(4, user.getFirstname());
+        preparedStatement.setString(5, user.getLastname());
+        preparedStatement.setInt(6, roleId);
         preparedStatement.executeUpdate();
 
         connectionManager.closeStatement(preparedStatement);

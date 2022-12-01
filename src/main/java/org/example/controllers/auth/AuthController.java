@@ -1,6 +1,7 @@
 package org.example.controllers.auth;
 
 import org.example.entities.user.UserRole;
+import org.example.exceptions.DatabaseException;
 import org.example.services.auth.LoginService;
 import org.example.services.auth.RegisterService;
 import org.example.views.auth.AuthView;
@@ -25,20 +26,30 @@ public class AuthController {
         return register();
     }
 
-    private boolean login() {
-        authView.startLogin();
-        String username = authView.getUsername();
-        String password = authView.getPassword();
-        return loginService.login(username, password);
+    protected boolean login() {
+        try {
+            authView.startLogin();
+            String username = authView.getUsername();
+            String password = authView.getPassword();
+            return loginService.login(username, password);
+        } catch (DatabaseException e){
+            authView.databaseExceptionMessage();
+            return false;
+        }
     }
 
-    private boolean register() {
-        authView.startRegistation();
-        String username = authView.getUsername();
-        String password = authView.getPassword();
-        String firstName = authView.getFirstname();
-        String lastName = authView.getLastname();
-        UserRole role = authView.getRole();
-        return registerService.register(username, password, firstName, lastName, role);
+    protected boolean register() {
+        try {
+            authView.startRegistation();
+            String username = authView.getUsername();
+            String password = authView.getPassword();
+            String firstName = authView.getFirstname();
+            String lastName = authView.getLastname();
+            UserRole role = authView.getRole();
+            return registerService.register(username, password, firstName, lastName, role);
+        } catch (DatabaseException e) {
+            authView.databaseExceptionMessage();
+            return false;
+        }
     }
 }

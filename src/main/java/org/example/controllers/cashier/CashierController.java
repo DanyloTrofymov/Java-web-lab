@@ -6,16 +6,16 @@ import org.example.entities.order.OrderStatus;
 import org.example.exceptions.DatabaseException;
 import org.example.services.GoodService;
 import org.example.services.OrderService;
-import org.example.views.user.cashier.CashierView;
+import org.example.views.cashier.CashierView;
 
 import java.io.IOError;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CashierController {
-    CashierView cashierView;
-    OrderService orderService;
-    GoodService goodService;
+    protected  CashierView cashierView;
+    protected OrderService orderService;
+    protected GoodService goodService;
 
 
     public CashierController(CashierView cashierView, OrderService orderService, GoodService goodService){
@@ -39,13 +39,13 @@ public class CashierController {
         }
     }
 
-    private void createOrder(){
+    protected void createOrder(){
         try{
             String buyerName = cashierView.getBuyersName();
             List<Good> goods = new ArrayList<>();
             boolean addGoods = true;
-            String name = cashierView.addGoods();
             while (addGoods){
+                String name = cashierView.addGoods();
                 Good good = goodService.findByName(name);
                 if(good == null){
                     cashierView.nameNotFound(name);
@@ -71,12 +71,12 @@ public class CashierController {
         }
     }
 
-    private void editOrder(){
+    protected void editOrder(){
         try{
             Order order = findOrder();
             boolean editGoods = true;
-            String name = cashierView.getGoodName();
             while (editGoods){
+                String name = cashierView.getGoodName();
                 List<Good> goods = order.getGoods();
                 Good searched = null;
                 for(Good good : goods){
@@ -110,7 +110,7 @@ public class CashierController {
         }
     }
 
-    private void editStatus() {
+    public void editStatus() {
         try{
             Order order = findOrder();
             OrderStatus status = cashierView.chooseStatus();
@@ -124,7 +124,7 @@ public class CashierController {
         }
     }
 
-    private void findAll(){
+    protected void findAll(){
         try {
             List<Order> orders = orderService.findAll();
             cashierView.orderList(orders);
@@ -133,7 +133,7 @@ public class CashierController {
         }
     }
 
-    private void findByStatus(){
+    protected void findByStatus(){
         try {
             OrderStatus status = cashierView.chooseStatus();
             List<Order> orders = orderService.findByStatus(status);
@@ -143,7 +143,7 @@ public class CashierController {
         }
     }
 
-    private Order findOrder(){
+    protected Order findOrder(){
         Order order;
         do{
             String orderId = cashierView.getOrderId();

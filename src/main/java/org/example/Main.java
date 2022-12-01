@@ -1,23 +1,26 @@
 package org.example;
 
+import org.example.entities.user.User;
+import org.example.entities.user.UserRole;
 import org.example.repositories.dao.mysql.services.UserServiceMySQL;
-import org.example.views.auth.AuthView;
+
+import java.util.List;
 
 public class Main {
     public static void main(String[] args){
         UserServiceMySQL userMySQL = new UserServiceMySQL();
 
-        //User user = userMySQL.findById(1);
-        //System.out.println(user);
+        User user = userMySQL.findById("1");
+        System.out.println(user);
 
-        //List<User> users = userMySQL.findAll();
-        //System.out.println(users);
+        List<User> users = userMySQL.findAll();
+        System.out.println(users);
 
-        //User user1 = new User("name", "surname", "username", "password", UserRole.getRole("EXPERT"));
-        //userMySQL.create(user1);
+        User user1 = new User("name", "surname", "username", "password", UserRole.getRole("EXPERT"));
+        userMySQL.create(user1);
 
         //User user11 = new User("newName", "surname", "username", "password", UserRole.getRole("CASHER"));
-        //userMySQL.update(4, user11);
+        //userMySQL.update(, user11);
 
         //userMySQL.delete(4);
 
@@ -61,9 +64,16 @@ public class Main {
         //GoodServiceMySQL goodMySQL = new GoodServiceMySQL();
         //OrderServiceMySQL orderMySQL = new OrderServiceMySQL();
         //ReportView view = new ReportView();
-        //ReportService service = new ReportService(orderMySQL, goodMySQL, view);
+        //ReportService service = new ReportService(view, orderMySQL, goodMySQL);
         //service.report_X();
-        AuthView view = new AuthView();
-        view.chooseAction();
+
+        //GoodServiceMySQL goodMySQL = new GoodServiceMySQL();
+        //OrderServiceMySQL orderMySQL = new OrderServiceMySQL();
+        //SeniorCashierView view = new SeniorCashierView();
+        //OrderService o = new OrderService(orderMySQL);
+        //GoodService g = new GoodService(goodMySQL);
+        //ReportService r = new ReportService(orderMySQL, goodMySQL);
+        //SeniorCashierController a = new SeniorCashierController(view, o, g, r);
+        //a.editStatus();
     }
 }

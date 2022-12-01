@@ -1,8 +1,8 @@
-package org.example.views.user;
+package org.example.views;
 
 import java.util.Scanner;
 
-public class GeneralUserView {
+public class MainView {
 
     private final Scanner scanner = new Scanner(System.in);
 
@@ -47,5 +47,13 @@ public class GeneralUserView {
             }
         }
         while(true);
+    }
+
+    public void databaseExceptionMessage(){
+        System.out.println("Internal server error.");
+    }
+
+    public void inputErrorMessage(){
+        System.out.println("Input error");
     }
 }

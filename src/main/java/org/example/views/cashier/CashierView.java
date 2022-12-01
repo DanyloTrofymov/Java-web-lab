@@ -1,15 +1,14 @@
-package org.example.views.user.cashier;
+package org.example.views.cashier;
 
 import org.example.controllers.cashier.CashierAction;
-import org.example.entities.good.Good;
 import org.example.entities.order.Order;
 import org.example.entities.order.OrderStatus;
-import org.example.views.user.GeneralUserView;
+import org.example.views.MainView;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class CashierView extends GeneralUserView {
+public class CashierView extends MainView {
     private final Scanner scanner = new Scanner(System.in);
 
     public CashierAction chooseAction() {

@@ -1,14 +1,14 @@
-package org.example.views.user.expert;
+package org.example.views.expert;
 
 import org.example.controllers.expert.ExpertAction;
 import org.example.entities.good.Good;
 import org.example.entities.good.GoodType;
-import org.example.views.user.GeneralUserView;
+import org.example.views.MainView;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class ExpertView extends GeneralUserView {
+public class ExpertView extends MainView {
     private final Scanner scanner = new Scanner(System.in);
 
     public ExpertAction chooseAction() {

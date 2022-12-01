@@ -20,12 +20,13 @@ public class GoodServiceMySQL extends AbstractGoodService {
     protected void createInternal(Good good, Connection dbConnection) throws SQLException {
         int typeId = getTypeId(good.getType());
         String sql = """
-                INSERT INTO `java_labs`.`good` (`name`, `type_id`, `price`) VALUES (?, ?, ?); 
+                INSERT INTO `java_labs`.`good` (`id`, `name`, `type_id`, `price`) VALUES (?, ?, ?, ?); 
                 """;
         PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
         preparedStatement.setString(1, good.getName());
-        preparedStatement.setInt(2, typeId);
-        preparedStatement.setFloat(3, good.getPrice());
+        preparedStatement.setString(2, good.getName());
+        preparedStatement.setInt(3, typeId);
+        preparedStatement.setFloat(4, good.getPrice());
         preparedStatement.executeUpdate();
 
         connectionManager.closeStatement(preparedStatement);

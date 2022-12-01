@@ -1,7 +1,5 @@
 package org.example.controllers.expert;
 
-import org.example.controllers.cashier.CashierAction;
-
 public enum ExpertAction {
     CREATE_GOOD,
     EDIT_AMOUNT,

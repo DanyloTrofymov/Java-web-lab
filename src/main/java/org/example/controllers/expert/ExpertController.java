@@ -4,17 +4,17 @@ import org.example.entities.good.Good;
 import org.example.entities.good.GoodType;
 import org.example.exceptions.DatabaseException;
 import org.example.services.GoodService;
-import org.example.views.user.expert.ExpertView;
+import org.example.views.expert.ExpertView;
 
 import java.io.IOError;
 import java.util.List;
 
-public class ExpertService {
+public class ExpertController {
     ExpertView expertView;
     GoodService goodService;
 
 
-    public ExpertService(ExpertView expertView, GoodService goodService){
+    public ExpertController(ExpertView expertView, GoodService goodService){
         this.expertView = expertView;
         this.goodService = goodService;
     }
@@ -33,7 +33,7 @@ public class ExpertService {
         }
     }
 
-    private void createGood(){
+    protected void createGood(){
         try{
             boolean addGoods = true;
             while (addGoods){
@@ -69,12 +69,16 @@ public class ExpertService {
         }
     }
 
-    private void editAmount(){
+    protected void editAmount(){
         try{
-            Good good = findGood();
-            float price = expertView.getPrice();
-            good.setPrice(price);
-            goodService.update(good.getId(), good);
+            boolean editAmount = true;
+            while (editAmount) {
+                Good good = findGood();
+                float price = expertView.getPrice();
+                good.setPrice(price);
+                goodService.update(good.getId(), good);
+                editAmount = expertView.wantToContinue();
+            }
         }
         catch (DatabaseException e) {
             System.out.println("Internal server error. ");
@@ -83,7 +87,7 @@ public class ExpertService {
         }
     }
 
-    private void findAll(){
+    protected void findAll(){
         try {
             List<Good> goods = goodService.findAll();
             expertView.goodList(goods);
@@ -92,7 +96,7 @@ public class ExpertService {
         }
     }
 
-    private void findByType(){
+    protected void findByType(){
         try {
             GoodType type = expertView.chooseType();
             List<Good> goods = goodService.findByType(type);
@@ -102,7 +106,7 @@ public class ExpertService {
         }
     }
 
-    private Good findGood(){
+    protected Good findGood(){
         Good good;
         do{
             String name = expertView.getGoodName();

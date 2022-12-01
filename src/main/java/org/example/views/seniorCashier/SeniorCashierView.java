@@ -1,8 +1,8 @@
-package org.example.views.user.seniorCashier;
+package org.example.views.seniorCashier;
 
 import org.example.entities.good.GoodType;
 import org.example.entities.order.OrderStatus;
-import org.example.views.user.cashier.CashierView;
+import org.example.views.cashier.CashierView;
 
 import java.util.Collections;
 import java.util.Scanner;

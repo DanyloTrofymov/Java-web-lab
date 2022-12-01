@@ -90,7 +90,7 @@ public class Good {
 
     @Override
     public String toString() {
-        return "Good{" +
+        return "\nGood{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", type=" + type +

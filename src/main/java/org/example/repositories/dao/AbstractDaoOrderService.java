@@ -8,9 +8,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-abstract public class AbstractOrderService extends AbstractCRUD<Order>{
+abstract public class AbstractDaoOrderService extends AbstractCRUD<Order>{
 
-    protected AbstractOrderService(AbstractConnectionManager connectionManager) {
+    protected AbstractDaoOrderService(AbstractConnectionManager connectionManager) {
         super(connectionManager);
     }
 

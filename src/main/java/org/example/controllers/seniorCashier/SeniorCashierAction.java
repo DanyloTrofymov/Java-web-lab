@@ -1,10 +1,11 @@
-package org.example.controllers.cashier;
+package org.example.controllers.seniorCashier;
 
-public enum CashierAction {
+public enum SeniorCashierAction {
     CREATE_ORDER,
     EDIT_ORDER,
     EDIT_STATUS,
     FIND_ALL,
     FIND_BY_STATUS,
+    GET_REPORT,
     LOGOUT;
 }

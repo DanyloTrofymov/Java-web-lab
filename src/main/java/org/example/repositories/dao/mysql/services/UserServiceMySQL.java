@@ -3,7 +3,7 @@ package org.example.repositories.dao.mysql.services;
 import org.example.entities.user.UserRole;
 import org.example.entities.user.User;
 
-import org.example.repositories.dao.AbstractUserService;
+import org.example.repositories.dao.AbstractDaoUserService;
 import org.example.repositories.dao.mysql.ConnectionManagerMySQL;
 
 import java.sql.Connection;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserServiceMySQL extends AbstractUserService {
+public class UserServiceMySQL extends AbstractDaoUserService {
     public UserServiceMySQL() { super(new ConnectionManagerMySQL()); }
 
     @Override

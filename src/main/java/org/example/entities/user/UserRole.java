@@ -2,8 +2,8 @@ package org.example.entities.user;
 
 public enum UserRole {
 
-    CASHER,
-    SENOR_CASHER,
+    CASHIER,
+    SENOR_CASHIER,
     EXPERT;
 
    public static UserRole getRole(String value) {
@@ -11,8 +11,8 @@ public enum UserRole {
            return null;
        }
        return switch (value.toLowerCase()) {
-           case "casher" -> CASHER;
-           case "senior_casher" -> SENOR_CASHER;
+           case "cashier" -> CASHIER;
+           case "senior_cashier" -> SENOR_CASHIER;
            case "expert" -> EXPERT;
            default -> null;
        };

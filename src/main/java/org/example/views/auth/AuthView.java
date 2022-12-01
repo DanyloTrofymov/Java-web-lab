@@ -4,7 +4,6 @@ import org.example.controllers.auth.AuthAction;
 import org.example.entities.user.UserRole;
 import org.example.views.MainView;
 
-import java.util.Objects;
 import java.util.Scanner;
 
 public class AuthView extends MainView {
@@ -34,6 +33,14 @@ public class AuthView extends MainView {
         System.out.println("REGISTRATION");
     }
 
+    public void userAlreadyExists() {
+        System.out.println("User with this username already exists. ");
+    }
+
+    public void wrongPass() {
+        System.out.println("Wrong username or password");
+    }
+
     public String getUsername() {
         System.out.println("Enter your username: ");
         return scanner.nextLine();
@@ -61,8 +68,8 @@ public class AuthView extends MainView {
             System.out.println("Enter number \n1: Casher\n 2: Senior casher \n 3: Expert");
             int line = scanner.nextInt();
             switch (line) {
-                case 1 -> role = UserRole.CASHER;
-                case 2 -> role = UserRole.SENOR_CASHER;
+                case 1 -> role = UserRole.CASHIER;
+                case 2 -> role = UserRole.SENOR_CASHIER;
                 case 3 -> role = UserRole.EXPERT;
                 default -> role = null;
             }

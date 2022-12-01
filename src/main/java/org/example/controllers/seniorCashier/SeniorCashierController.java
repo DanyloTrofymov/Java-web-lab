@@ -1,5 +1,6 @@
 package org.example.controllers.seniorCashier;
 
+import org.example.controllers.cashier.CashierAction;
 import org.example.controllers.cashier.CashierController;
 import org.example.entities.good.Good;
 import org.example.entities.good.GoodType;
@@ -22,9 +23,24 @@ public class SeniorCashierController extends CashierController {
         this.reportService = reportService;
         this.seniorCashierView = seniorCashierView;
     }
-
     @Override
-    public void editOrder() {
+    public void start(){
+        boolean login = true;
+        while (login){
+            SeniorCashierAction action = seniorCashierView.chooseSeniorAction();
+            switch (action){
+                case CREATE_ORDER -> createOrder();
+                case EDIT_ORDER -> editOrder();
+                case EDIT_STATUS -> editStatus();
+                case FIND_ALL -> findAll();
+                case FIND_BY_STATUS -> findByStatus();
+                case GET_REPORT -> getReport();
+                case LOGOUT -> login = false;
+            }
+        }
+    }
+    @Override
+    protected void editOrder() {
         try {
             String action = seniorCashierView.chooseActionWithGood();
             if (action.equals("edit")) {
@@ -32,6 +48,9 @@ public class SeniorCashierController extends CashierController {
             }
             if (action.equals("remove")) {
                 Order order = findOrder();
+                if(order == null){
+                    return;
+                }
                 boolean editGoods = true;
                 while (editGoods) {
                     String name = seniorCashierView.getGoodName();
@@ -45,6 +64,7 @@ public class SeniorCashierController extends CashierController {
                     }
                     if (searched == null) {
                         seniorCashierView.nameNotFound(name);
+                        editGoods = seniorCashierView.wantToContinue();
                         continue;
                     }
                     order.setGoods(goods);
@@ -59,7 +79,7 @@ public class SeniorCashierController extends CashierController {
         }
     }
 
-    public void getReport(){
+    protected void getReport(){
         try {
             String type = seniorCashierView.chooseReportType();
             if(type.equals("x")) {
@@ -78,6 +98,5 @@ public class SeniorCashierController extends CashierController {
             System.out.println("Internal server error. ");
         }
     }
-
 }
 

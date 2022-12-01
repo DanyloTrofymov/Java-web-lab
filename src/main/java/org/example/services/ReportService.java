@@ -3,19 +3,19 @@ package org.example.services;
 import org.example.entities.good.Good;
 import org.example.entities.good.GoodType;
 import org.example.entities.order.Order;
-import org.example.repositories.dao.AbstractGoodService;
-import org.example.repositories.dao.AbstractOrderService;
+import org.example.repositories.dao.AbstractDaoGoodService;
+import org.example.repositories.dao.AbstractDaoOrderService;
 
 import java.util.*;
 import java.util.function.BinaryOperator;
 
 public class ReportService {
 
-    private final AbstractOrderService orderService;
+    private final AbstractDaoOrderService orderService;
 
-    private final AbstractGoodService goodService;
+    private final AbstractDaoGoodService goodService;
 
-    public ReportService(AbstractOrderService orderService, AbstractGoodService goodService) {
+    public ReportService(AbstractDaoOrderService orderService, AbstractDaoGoodService goodService) {
         this.orderService = orderService;
         this.goodService = goodService;
     }

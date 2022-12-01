@@ -49,6 +49,7 @@ public class CashierController {
                 Good good = goodService.findByName(name);
                 if(good == null){
                     cashierView.nameNotFound(name);
+                    addGoods = cashierView.wantToContinue();
                     continue;
                 }
                 float quantity = cashierView.getQuantity();
@@ -74,6 +75,9 @@ public class CashierController {
     protected void editOrder(){
         try{
             Order order = findOrder();
+            if(order == null){
+                return;
+            }
             boolean editGoods = true;
             while (editGoods){
                 String name = cashierView.getGoodName();
@@ -87,6 +91,7 @@ public class CashierController {
                 }
                 if(searched == null){
                     cashierView.nameNotFound(name);
+                    editGoods = cashierView.wantToContinue();
                     continue;
                 }
                 float quantity = cashierView.getQuantity();
@@ -113,6 +118,9 @@ public class CashierController {
     public void editStatus() {
         try{
             Order order = findOrder();
+            if(order == null){
+                return;
+            }
             OrderStatus status = cashierView.chooseStatus();
             order.setStatus(status);
             orderService.update(order.getId(), order);
@@ -150,6 +158,9 @@ public class CashierController {
             order = orderService.findById(orderId);
             if(order == null){
                 cashierView.idNotFound(orderId);
+                if(!cashierView.wantToContinue()) {
+                    return null;
+                }
             }
         }while(order == null);
         return order;

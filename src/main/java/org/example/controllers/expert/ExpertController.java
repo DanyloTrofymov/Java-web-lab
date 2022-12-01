@@ -41,6 +41,7 @@ public class ExpertController {
                 Good search = goodService.findByName(goodName);
                 if(search != null){
                     expertView.alreadyExists();
+                    addGoods = expertView.wantToContinue();
                     continue;
                 }
                 GoodType type = expertView.chooseType();
@@ -74,6 +75,9 @@ public class ExpertController {
             boolean editAmount = true;
             while (editAmount) {
                 Good good = findGood();
+                if(good == null){
+                    return;
+                }
                 float price = expertView.getPrice();
                 good.setPrice(price);
                 goodService.update(good.getId(), good);
@@ -113,6 +117,9 @@ public class ExpertController {
             good = goodService.findByName(name);
             if(good == null){
                 expertView.nameNotFound(name);
+                if(!expertView.wantToContinue()) {
+                    return null;
+                }
             }
         }while(good == null);
         return good;

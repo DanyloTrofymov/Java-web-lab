@@ -2,14 +2,14 @@ package org.example.services;
 
 import org.example.entities.good.Good;
 import org.example.entities.good.GoodType;
-import org.example.repositories.dao.AbstractGoodService;
+import org.example.repositories.dao.AbstractDaoGoodService;
 
 import java.util.List;
 
 public class GoodService {
-    private final AbstractGoodService goodService;
+    private final AbstractDaoGoodService goodService;
 
-    public GoodService(AbstractGoodService service) { this.goodService = service; }
+    public GoodService(AbstractDaoGoodService service) { this.goodService = service; }
 
     public void create(Good good) { goodService.create(good); }
 

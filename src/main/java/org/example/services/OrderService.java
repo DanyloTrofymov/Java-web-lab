@@ -2,14 +2,14 @@ package org.example.services;
 
 import org.example.entities.order.Order;
 import org.example.entities.order.OrderStatus;
-import org.example.repositories.dao.AbstractOrderService;
+import org.example.repositories.dao.AbstractDaoOrderService;
 
 import java.util.List;
 
 public class OrderService {
-    private final AbstractOrderService orderService;
+    private final AbstractDaoOrderService orderService;
 
-    public OrderService(AbstractOrderService orderService) { this.orderService = orderService; }
+    public OrderService(AbstractDaoOrderService orderService) { this.orderService = orderService; }
 
     public void create(Order order) { orderService.create(order); }
 

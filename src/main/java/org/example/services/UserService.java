@@ -2,14 +2,14 @@ package org.example.services;
 
 import org.example.entities.user.User;
 import org.example.entities.user.UserRole;
-import org.example.repositories.dao.AbstractUserService;
+import org.example.repositories.dao.AbstractDaoUserService;
 
 import java.util.List;
 
 public class UserService {
-    private final AbstractUserService userService;
+    private final AbstractDaoUserService userService;
 
-    public UserService(AbstractUserService userService){ this.userService = userService; }
+    public UserService(AbstractDaoUserService userService){ this.userService = userService; }
 
     public void create(User user)  { userService.create(user); }
 

@@ -2,7 +2,7 @@ package org.example.repositories.dao.mysql.services;
 
 import org.example.entities.good.Good;
 import org.example.entities.good.GoodType;
-import org.example.repositories.dao.AbstractGoodService;
+import org.example.repositories.dao.AbstractDaoGoodService;
 import org.example.repositories.dao.mysql.ConnectionManagerMySQL;
 
 import java.sql.Connection;
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoodServiceMySQL extends AbstractGoodService {
+public class GoodServiceMySQL extends AbstractDaoGoodService {
     public GoodServiceMySQL(){
         super(new ConnectionManagerMySQL());
     }

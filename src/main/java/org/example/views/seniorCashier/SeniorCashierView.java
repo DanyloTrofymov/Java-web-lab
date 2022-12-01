@@ -1,5 +1,7 @@
 package org.example.views.seniorCashier;
 
+import org.example.controllers.cashier.CashierAction;
+import org.example.controllers.seniorCashier.SeniorCashierAction;
 import org.example.entities.good.GoodType;
 import org.example.entities.order.OrderStatus;
 import org.example.views.cashier.CashierView;
@@ -12,6 +14,25 @@ public class SeniorCashierView extends CashierView {
 
     private final Scanner scanner = new Scanner(System.in);
 
+    public SeniorCashierAction chooseSeniorAction() {
+        SeniorCashierAction action = null;
+        System.out.println("Choose action:");
+        do{
+            System.out.println("Enter number \n1: Create order\n2: Edit order\n3: Edit status\n" +
+                    "4: Find all orders\n5: Find good by status\n6: Get report \n7: Logout\n");
+            String line = scanner.nextLine();
+            switch (line){
+                case "1" -> action = SeniorCashierAction.CREATE_ORDER;
+                case "2" -> action = SeniorCashierAction.EDIT_ORDER;
+                case "3" -> action = SeniorCashierAction.EDIT_STATUS;
+                case "4" -> action = SeniorCashierAction.FIND_ALL;
+                case "5" -> action = SeniorCashierAction.FIND_BY_STATUS;
+                case "6" -> action = SeniorCashierAction.GET_REPORT;
+                case "7" -> action = SeniorCashierAction.LOGOUT;
+            }
+        } while (action == null);
+        return action;
+    }
     @Override
     public OrderStatus chooseStatus() {
         OrderStatus status = null;

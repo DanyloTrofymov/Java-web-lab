@@ -3,7 +3,7 @@ package org.example.repositories.dao.mysql.services;
 import org.example.entities.good.Good;
 import org.example.entities.order.Order;
 import org.example.entities.order.OrderStatus;
-import org.example.repositories.dao.AbstractOrderService;
+import org.example.repositories.dao.AbstractDaoOrderService;
 import org.example.repositories.dao.mysql.ConnectionManagerMySQL;
 
 import java.sql.Connection;
@@ -11,10 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class OrderServiceMySQL extends AbstractOrderService {
+public class OrderServiceMySQL extends AbstractDaoOrderService {
     public OrderServiceMySQL() {
         super(new ConnectionManagerMySQL());
     }
@@ -33,11 +32,13 @@ public class OrderServiceMySQL extends AbstractOrderService {
 
         connectionManager.closeStatement(preparedStatement);
 
-        putGoodsInOrder(order, dbConnection);
+        putGoodsInOrder(order.getId(), order, dbConnection);
     }
 
     @Override
     protected void deleteInternal(String id, Connection dbConnection) throws SQLException {
+        deleteAllGoodsFromOrder(id, dbConnection);
+
         String sql = """
             DELETE FROM `order` WHERE `id` = ?;
             """;
@@ -45,8 +46,6 @@ public class OrderServiceMySQL extends AbstractOrderService {
         preparedStatement.setString(1, id);
         preparedStatement.executeUpdate();
         connectionManager.closeStatement(preparedStatement);
-
-        deleteAllGoodsFromOrder(id, dbConnection);
     }
 
     @Override
@@ -66,8 +65,8 @@ public class OrderServiceMySQL extends AbstractOrderService {
         preparedStatement.executeUpdate();
         connectionManager.closeStatement(preparedStatement);
 
-        deleteAllGoodsFromOrder(newOrder.getId(), dbConnection);
-        putGoodsInOrder(newOrder, dbConnection);
+        deleteAllGoodsFromOrder(id, dbConnection);
+        putGoodsInOrder(id, newOrder, dbConnection);
     }
 
     @Override
@@ -153,7 +152,7 @@ public class OrderServiceMySQL extends AbstractOrderService {
         return  goods;
     }
 
-    private void putGoodsInOrder(Order order, Connection dbConnection) throws SQLException{
+    private void putGoodsInOrder(String id, Order order, Connection dbConnection) throws SQLException{
 
         for(Good good : order.getGoods()) {
             String sql = """
@@ -162,7 +161,7 @@ public class OrderServiceMySQL extends AbstractOrderService {
             PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
             preparedStatement.setString(1, good.getId());
             preparedStatement.setFloat(2, good.getAmount());
-            preparedStatement.setString(3, order.getId());
+            preparedStatement.setString(3, id);
             preparedStatement.executeUpdate();
             connectionManager.closeStatement(preparedStatement);
         }

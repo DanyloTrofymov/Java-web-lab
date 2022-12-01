@@ -20,13 +20,14 @@ public class GoodServiceMySQL extends AbstractGoodService {
     protected void createInternal(Good good, Connection dbConnection) throws SQLException {
         int typeId = getTypeId(good.getType());
         String sql = """
-                INSERT INTO `java_labs`.`good` (`id`, `name`, `type_id`, `price`) VALUES (?, ?, ?, ?); 
+                INSERT INTO `java_labs`.`good` (`id`, `name`, `type_id`, `price`, `amount`) VALUES (?, ?, ?, ?, ?); 
                 """;
         PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
-        preparedStatement.setString(1, good.getName());
+        preparedStatement.setString(1, good.getId());
         preparedStatement.setString(2, good.getName());
         preparedStatement.setInt(3, typeId);
         preparedStatement.setFloat(4, good.getPrice());
+        preparedStatement.setFloat(5, good.getAmount());
         preparedStatement.executeUpdate();
 
         connectionManager.closeStatement(preparedStatement);
@@ -68,7 +69,7 @@ public class GoodServiceMySQL extends AbstractGoodService {
     protected List<Good> findAllInternal(Connection dbConnection) throws SQLException {
         List<Good> goods = new ArrayList<>();
         String sql = """
-            SELECT `good`.`id`, `name`, `price`, `good_type`.`type` FROM `good`
+            SELECT `good`.`id`, `name`, `price`, `amount`, `good_type`.`type` FROM `good`
             INNER JOIN `good_type`
             ON `good`.`type_id` = `good_type`.`id`;
             """;
@@ -86,7 +87,7 @@ public class GoodServiceMySQL extends AbstractGoodService {
     protected Good findByIdInternal(String id, Connection dbConnection) throws SQLException {
         Good good = new Good();
         String sql = """
-            SELECT `good`.`id`, `name`, `price`, `good_type`.`type` FROM `good`
+            SELECT `good`.`id`, `name`, `price`, `amount`, `good_type`.`type` FROM `good`
             INNER JOIN `good_type`
             ON `good`.`type_id` = `good_type`.`id` WHERE `good`.`id` = ?;
             """;
@@ -143,6 +144,7 @@ public class GoodServiceMySQL extends AbstractGoodService {
         good.setName(result.getString("name"));
         good.setPrice(result.getInt("price"));
         good.setType(result.getString("type"));
+        good.setAmount(result.getFloat("amount"));
 
         return good;
     }

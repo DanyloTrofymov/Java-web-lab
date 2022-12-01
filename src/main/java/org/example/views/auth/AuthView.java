@@ -11,14 +11,18 @@ public class AuthView extends MainView {
 
     public AuthAction chooseAction() {
         AuthAction action = null;
-        System.out.println("Choose action:");
+        System.out.println("\nChoose action:");
         do{
-            System.out.println("Enter number\n1: Login\n2: Register\n");
-            int line = scanner.nextInt();
-            if (line == 1) {
+            System.out.println("""
+                                Enter number:
+                                1: Login
+                                2: Register
+                                """);
+            String line = scanner.nextLine();
+            if (line.equals("1")) {
                 action = AuthAction.LOGIN;
             }
-            if (line == 2) {
+            if (line.equals("2")) {
                 action = AuthAction.REGISTER;
             }
         } while (action == null);
@@ -63,17 +67,25 @@ public class AuthView extends MainView {
 
     public UserRole getRole() {
         UserRole role = null;
-        System.out.println("Enter your role: ");
+        System.out.println("\nEnter your role: ");
         do{
-            System.out.println("Enter number \n1: Casher\n 2: Senior casher \n 3: Expert");
-            int line = scanner.nextInt();
+            System.out.println("""
+                                Enter number:
+                                1: Expert
+                                2: Cashier
+                                3: Senior cashier
+                                """);
+            String line = scanner.nextLine();
             switch (line) {
-                case 1 -> role = UserRole.CASHIER;
-                case 2 -> role = UserRole.SENOR_CASHIER;
-                case 3 -> role = UserRole.EXPERT;
-                default -> role = null;
+                case "1" -> role = UserRole.EXPERT;
+                case "2" -> role = UserRole.CASHIER;
+                case "3" -> role = UserRole.SENIOR_CASHIER;
             }
         } while (role == null);
         return role;
+    }
+
+    public void authorized(String name, String surname, UserRole role) {
+        System.out.println("You have been authorized as " + name + ' ' + surname + ", " + role);
     }
 }

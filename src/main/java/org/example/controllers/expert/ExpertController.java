@@ -7,6 +7,7 @@ import org.example.services.GoodService;
 import org.example.views.expert.ExpertView;
 
 import java.io.IOError;
+import java.util.InputMismatchException;
 import java.util.List;
 
 public class ExpertController {
@@ -39,34 +40,35 @@ public class ExpertController {
             while (addGoods){
                 String goodName = expertView.getGoodName();
                 Good search = goodService.findByName(goodName);
-                if(search != null){
+                if(!search.isNull()){
                     expertView.alreadyExists();
-                    addGoods = expertView.wantToContinue();
+                    addGoods = expertView.wantToSmth("add another good");
                     continue;
                 }
                 GoodType type = expertView.chooseType();
-                float quantity = expertView.getQuantity();
-                if(quantity <= 0 ) {
-                    while (quantity <= 0) {
+                float amount = expertView.getAmount();
+                if(amount <= 0 ) {
+                    while (amount <= 0) {
                         expertView.illegalQuantity();
-                        quantity = expertView.getQuantity();
+                        amount = expertView.getAmount();
                     }
                 }
-                float price = expertView.getQuantity();
+                float price = expertView.getPrice();
                 if(price <= 0 ) {
                     while (price <= 0) {
-                        expertView.illegalQuantity();
-                        price = expertView.getQuantity();
+                        expertView.illegalPrice();
+                        price = expertView.getPrice();
                     }
                 }
-                Good good = new Good(goodName, price, quantity);
+                Good good = new Good(goodName, type, price, amount);
                 goodService.create(good);
-                addGoods = expertView.wantToContinue();
+                expertView.smthSeccessfuly("Good added");
+                addGoods = expertView.wantToSmth("add more");
             }
         } catch (DatabaseException e) {
-            System.out.println("Internal server error.");
-        } catch (IOError e){
-            System.out.println("Input error");
+            expertView.databaseExceptionMessage();
+        } catch (InputMismatchException e){
+            expertView.inputErrorMessage();
         }
     }
 
@@ -78,25 +80,30 @@ public class ExpertController {
                 if(good == null){
                     return;
                 }
-                float price = expertView.getPrice();
-                good.setPrice(price);
+                float amount = expertView.getAmount();
+                good.setAmount(amount);
                 goodService.update(good.getId(), good);
-                editAmount = expertView.wantToContinue();
+                expertView.smthSeccessfuly("Amount updated");
+                editAmount = expertView.wantToSmth("edit other goods");
             }
-        }
-        catch (DatabaseException e) {
-            System.out.println("Internal server error. ");
-        } catch (IOError e){
-            System.out.println("Input error");
+        } catch (DatabaseException e) {
+            expertView.databaseExceptionMessage();
+        } catch (InputMismatchException e){
+            expertView.inputErrorMessage();
         }
     }
 
     protected void findAll(){
         try {
             List<Good> goods = goodService.findAll();
-            expertView.goodList(goods);
-        }catch (DatabaseException e) {
-            System.out.println("Internal server error. ");
+            if(goods.size() == 0){
+                expertView.print("No goods");
+            }
+            else {
+                expertView.goodList(goods);
+            }
+        } catch (DatabaseException e) {
+            expertView.databaseExceptionMessage();
         }
     }
 
@@ -104,9 +111,14 @@ public class ExpertController {
         try {
             GoodType type = expertView.chooseType();
             List<Good> goods = goodService.findByType(type);
-            expertView.goodList(goods);
-        }catch (DatabaseException e) {
-            System.out.println("Internal server error. ");
+            if(goods.size() == 0){
+                expertView.print("No goods with this type");
+            }
+            else {
+                expertView.goodList(goods);
+            }
+        } catch (DatabaseException e) {
+            expertView.databaseExceptionMessage();
         }
     }
 
@@ -115,13 +127,13 @@ public class ExpertController {
         do{
             String name = expertView.getGoodName();
             good = goodService.findByName(name);
-            if(good == null){
+            if(good.isNull()){
                 expertView.nameNotFound(name);
-                if(!expertView.wantToContinue()) {
+                if(!expertView.wantToSmth("enter another name")) {
                     return null;
                 }
             }
-        }while(good == null);
+        }while(good.isNull());
         return good;
     }
 }

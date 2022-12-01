@@ -107,7 +107,9 @@ public class GoodServiceMySQL extends AbstractDaoGoodService {
         int typeId = getTypeId(type);
         List<Good> goods = new ArrayList<>();
         String sql = """
-            SELECT * FROM `java_labs`.`good` WHERE `type_id` = ?
+            SELECT `good`.`id`, `name`, `price`, `amount`, `good_type`.`type` FROM `good`
+            INNER JOIN `good_type`
+            ON `good`.`type_id` = `good_type`.`id` WHERE `type_id` = ?
             """;
         PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
         preparedStatement.setInt(1, typeId);
@@ -124,7 +126,9 @@ public class GoodServiceMySQL extends AbstractDaoGoodService {
     public Good findByNameInternal (String name, Connection dbConnection) throws SQLException {
         Good good = new Good();
         String sql = """
-            SELECT * FROM `java_labs`.`good` WHERE `name` = ?
+            SELECT `good`.`id`, `name`, `price`, `amount`, `good_type`.`type` FROM `good`
+            INNER JOIN `good_type`
+            ON `good`.`type_id` = `good_type`.`id` WHERE `name` = ?
             """;
         PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
         preparedStatement.setString(1, name);

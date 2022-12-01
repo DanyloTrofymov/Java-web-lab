@@ -88,9 +88,13 @@ public class Good {
 
     public void setAmount(float amount) { this.amount = amount; }
 
+    public boolean isNull(){
+        return (id == null && name == null && type == null && price == 0 && amount == 0);
+    }
+
     @Override
     public String toString() {
-        return "\nGood{" +
+        return "Good{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", type=" + type +

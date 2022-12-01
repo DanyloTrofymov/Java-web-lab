@@ -8,6 +8,9 @@ import org.example.services.auth.LoginService;
 import org.example.services.auth.RegisterService;
 import org.example.views.auth.AuthView;
 
+import java.io.IOException;
+import java.util.InputMismatchException;
+
 public class AuthController {
 
     private final AuthView authView;
@@ -15,7 +18,7 @@ public class AuthController {
     private final RegisterService registerService;
     UserService userService;
 
-    public AuthController(AuthView authView, LoginService loginService, RegisterService registerService, UserService userService){
+    public AuthController(AuthView authView, LoginService loginService, RegisterService registerService, UserService userService) {
         this.authView = authView;
         this.loginService = loginService;
         this.registerService = registerService;
@@ -23,18 +26,23 @@ public class AuthController {
     }
 
     public User start() {
-        while (true){
-            AuthAction action = authView.chooseAction();
-            User user;
-            if (action == AuthAction.LOGIN) {
-                user = login();
+        try {
+            while (true) {
+                AuthAction action = authView.chooseAction();
+                User user;
+                if (action == AuthAction.LOGIN) {
+                    user = login();
+                } else {
+                    user = register();
+                }
+                if (user != null) {
+                    authView.authorized(user.getFirstname(), user.getLastname(), user.getRole());
+                    return user;
+                }
             }
-            else {
-                user = register();
-            }
-            if(user != null) {
-                return user;
-            }
+        } catch (InputMismatchException e) {
+            authView.inputErrorMessage();
+            return null;
         }
     }
 
@@ -46,15 +54,16 @@ public class AuthController {
                 String username = authView.getUsername();
                 String password = authView.getPassword();
                 user = loginService.login(username, password);
-                if(user == null){
+                if (user == null) {
                     authView.wrongPass();
-                    if (authView.wantToContinue()) {
+                    if (authView.wantToSmth("try again")) {
                         continue;
                     }
                     return null;
                 }
+                return user;
             }
-        } catch (DatabaseException e){
+        } catch (DatabaseException e) {
             authView.databaseExceptionMessage();
             return null;
         }
@@ -65,9 +74,9 @@ public class AuthController {
             while (true) {
                 authView.startRegistation();
                 String username = authView.getUsername();
-                if (userService.findByUsername(username) != null) {
+                if (!userService.findByUsername(username).isNull()) {
                     authView.userAlreadyExists();
-                    if (authView.wantToContinue()) {
+                    if (authView.wantToSmth("repeat")) {
                         continue;
                     }
                     return null;
@@ -79,6 +88,7 @@ public class AuthController {
                 return registerService.register(username, password, firstName, lastName, role);
             }
         } catch (DatabaseException e) {
+            System.out.println(e);
             authView.databaseExceptionMessage();
             return null;
         }

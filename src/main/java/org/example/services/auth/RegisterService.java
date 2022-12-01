@@ -10,11 +10,7 @@ public class RegisterService {
     public RegisterService (AbstractDaoUserService userService){ this.userService = userService; }
     public User register(String username, String password, String firstName, String lastName, UserRole role) {
         User user = new User(username, password, firstName, lastName, role);
-        try {
-            userService.create(user);
-        } catch (DatabaseException exception) {
-            return null;
-        }
+        userService.create(user);
         return user;
     }
 }

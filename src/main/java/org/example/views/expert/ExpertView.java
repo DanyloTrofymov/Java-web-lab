@@ -13,9 +13,16 @@ public class ExpertView extends MainView {
 
     public ExpertAction chooseAction() {
         ExpertAction action = null;
-        System.out.println("Choose action:");
+        System.out.println("\nChoose action:");
         do{
-            System.out.println("Enter number \n1: Create good\n2: Specify the quantity\n3: Check storage\n4: Find good by type\n 5: Logout\n");
+            System.out.println("""
+                            Enter number
+                            1: Create good
+                            2: Specify the quantity
+                            3: Check storage
+                            4: Find good by type
+                            5: Logout
+                            """);
             String line = scanner.nextLine();
             switch (line){
                 case "1" -> action = ExpertAction.CREATE_GOOD;
@@ -35,10 +42,20 @@ public class ExpertView extends MainView {
     }
 
     public GoodType chooseType(){
-        System.out.println("Choose type: ");
+        System.out.println("\nChoose type: ");
         GoodType type = null;
         do{
-            System.out.println("Enter number \n1: Fruits\n2: Vegitables\n3: Dairy\n4: Meat\n5: Household\n6: Chemicals\n7: Clothing\n8: Other\n");
+            System.out.println("""
+                    Enter number:
+                    1: Fruits
+                    2: Vegetables
+                    3: Dairy
+                    4: Meat
+                    5: Household
+                    6: Chemicals
+                    7: Clothing
+                    8: Other
+                    """);
             String line = scanner.nextLine();
             switch (line){
                 case "1" -> type = GoodType.FRUITS;
@@ -56,16 +73,9 @@ public class ExpertView extends MainView {
 
     public float getPrice(){
         System.out.println("Enter price: ");
-        return scanner.nextFloat();
-    }
-
-    public float getAmount(){
-        System.out.println("Enter amount: ");
-        return scanner.nextFloat();
-    }
-
-    public void typeNotFound(String type){
-        System.out.println("Type \"" + type + "\" does not exists");
+        float price = scanner.nextFloat();
+        scanner.nextLine();
+        return price;
     }
 
     public void alreadyExists(){ System.out.println("Good with this name already exists. Try to add another one."); }

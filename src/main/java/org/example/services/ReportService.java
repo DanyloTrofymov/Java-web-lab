@@ -32,28 +32,20 @@ public class ReportService {
         List<Order> orders = orderService.findAll();
         float sum = getSum();
         int count = orders.size();
-        float avg = sum / count;
-        return avg;
+        return sum / count;
     }
     public int getCount(){
         return orderService.findAll().size();
     }
 
-    public Set<GoodType> getCountOfTypes(){
-        List<GoodType> types = getAllGoodTypes();
-        Set<GoodType> countOfTypes = new HashSet<>(types);
-        return countOfTypes;
-    }
-
     public GoodType getMostPopular(){
         List<GoodType> types = getAllGoodTypes();
-        GoodType maxOccurredElement = types.stream()
-                .reduce(BinaryOperator.maxBy(Comparator.comparingInt(o -> Collections.frequency(types, o)))).orElse(null);
 
-        return maxOccurredElement;
+        return types.stream()
+                .reduce(BinaryOperator.maxBy(Comparator.comparingInt(o -> Collections.frequency(types, o)))).orElse(null);
     }
 
-    private List<GoodType> getAllGoodTypes(){
+    public List<GoodType> getAllGoodTypes(){
         List<Good> goods = goodService.findAll();
         List<GoodType> types = new ArrayList<>();
         for (Good good : goods) {

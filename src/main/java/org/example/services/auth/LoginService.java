@@ -8,7 +8,10 @@ public class LoginService {
     public LoginService (AbstractDaoUserService userService){ this.userService = userService; }
     public User login(String username, String password) {
         User user = userService.findByUsername(username);
-        return user;
+        if(user.getPassword().equals(password)) {
+            return user;
+        }
+        return null;
     }
 }
 

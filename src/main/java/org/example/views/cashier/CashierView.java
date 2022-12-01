@@ -13,9 +13,17 @@ public class CashierView extends MainView {
 
     public CashierAction chooseAction() {
         CashierAction action = null;
-        System.out.println("Choose action:");
+        System.out.println("\nChoose action:");
         do{
-            System.out.println("Enter number \n1: Create order\n2: Edit order\n3: Edit status\n4: Find all orders\n5: Find good by status\n 6: Logout\n");
+            System.out.println("""
+                            Enter number 
+                            1: Create order
+                            2: Edit amount of good order
+                            3: Edit order status
+                            4: Find all orders
+                            5: Find good by status
+                            6: Logout
+                            """);
             String line = scanner.nextLine();
             switch (line){
                 case "1" -> action = CashierAction.CREATE_ORDER;
@@ -31,9 +39,14 @@ public class CashierView extends MainView {
 
     public OrderStatus chooseStatus() {
         OrderStatus status = null;
-        System.out.println("Choose status:");
+        System.out.println("\nChoose status:");
         do{
-            System.out.println("Enter number \n1: REGISTERED,\n2: ACCEPTED\n3: DONE\n");
+            System.out.println("""
+                                Enter number:
+                                1: REGISTERED
+                                2: ACCEPTED
+                                3: DONE
+                                """);
             String action = scanner.nextLine();
             switch (action) {
                 case "1" -> status = OrderStatus.REGISTERED;

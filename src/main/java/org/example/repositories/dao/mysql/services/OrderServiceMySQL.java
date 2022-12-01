@@ -112,7 +112,9 @@ public class OrderServiceMySQL extends AbstractDaoOrderService {
         int statusId = getStatusId(status);
         List<Order> orders = new ArrayList<>();
         String sql = """
-            SELECT * FROM `java_labs`.`order` WHERE `status_id` = ?
+            SELECT `order`.`id`, `buyer_name`, `status_id`, `order_status`.`status` FROM `order`
+            INNER JOIN `order_status`
+            ON `order`.`status_id` = `order_status`.`id` WHERE `status_id` = ?
             """;
         PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
         preparedStatement.setInt(1, statusId);

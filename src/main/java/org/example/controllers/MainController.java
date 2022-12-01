@@ -40,10 +40,10 @@ public class MainController {
             User user = authorize();
             switch (user.getRole()) {
                 case CASHIER -> cashierMenu();
-                case SENOR_CASHIER -> seniorCashierMenu();
+                case SENIOR_CASHIER -> seniorCashierMenu();
                 case EXPERT -> expertMenu();
             }
-        } while (view.wantToContinue());
+        } while (!view.wantToSmth("exit"));
     }
 
     private void cashierMenu(){
@@ -79,7 +79,10 @@ public class MainController {
         RegisterService registerService = new RegisterService(daoUserService);
         UserService userService = new UserService(daoUserService);
         AuthController authController = new AuthController(authView, loginService, registerService, userService);
-
-        return authController.start();
+        User user;
+        do{
+            user = authController.start();
+        } while(user == null);
+        return user;
     }
 }

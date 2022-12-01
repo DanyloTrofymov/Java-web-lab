@@ -12,6 +12,8 @@ import org.example.services.ReportService;
 import org.example.views.seniorCashier.SeniorCashierView;
 
 import java.io.IOError;
+import java.util.HashSet;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Set;
 
@@ -48,7 +50,8 @@ public class SeniorCashierController extends CashierController {
             }
             if (action.equals("remove")) {
                 Order order = findOrder();
-                if(order == null){
+                seniorCashierView.print(order.toString());
+                if(order.isNull()){
                     return;
                 }
                 boolean editGoods = true;
@@ -60,22 +63,23 @@ public class SeniorCashierController extends CashierController {
                         if (good.getName().equals(name)) {
                             searched = good;
                             goods.remove(good);
+                            break;
                         }
                     }
                     if (searched == null) {
                         seniorCashierView.nameNotFound(name);
-                        editGoods = seniorCashierView.wantToContinue();
+                        editGoods = seniorCashierView.wantToSmth("enter another name");
                         continue;
                     }
                     order.setGoods(goods);
-                    editGoods = seniorCashierView.wantToContinue();
+                    editGoods = seniorCashierView.wantToSmth("remove other good");
                 }
                 orderService.update(order.getId(), order);
             }
         } catch (DatabaseException e) {
-            System.out.println("Internal server error. ");
-        } catch (IOError e) {
-            System.out.println("Input error");
+            seniorCashierView.databaseExceptionMessage();
+        } catch (InputMismatchException e) {
+            seniorCashierView.inputErrorMessage();
         }
     }
 
@@ -89,13 +93,13 @@ public class SeniorCashierController extends CashierController {
                 seniorCashierView.printXReport(count, avg, sum);
             }
             if (type.equals("z")){
-                Set<GoodType> countOfTypes = reportService.getCountOfTypes();
+                List<GoodType> countOfTypes = reportService.getAllGoodTypes();
                 GoodType mostPopular = reportService.getMostPopular();
                 seniorCashierView.printZReport(countOfTypes, mostPopular);
             }
 
         } catch (DatabaseException e) {
-            System.out.println("Internal server error. ");
+            seniorCashierView.databaseExceptionMessage();;
         }
     }
 }

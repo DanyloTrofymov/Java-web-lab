@@ -8,8 +8,8 @@ import org.example.services.GoodService;
 import org.example.services.OrderService;
 import org.example.views.cashier.CashierView;
 
-import java.io.IOError;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 
 public class CashierController {
@@ -47,28 +47,29 @@ public class CashierController {
             while (addGoods){
                 String name = cashierView.addGoods();
                 Good good = goodService.findByName(name);
-                if(good == null){
+                if(good.isNull()){
                     cashierView.nameNotFound(name);
-                    addGoods = cashierView.wantToContinue();
+                    addGoods = cashierView.wantToSmth("add more goods?");
                     continue;
                 }
-                float quantity = cashierView.getQuantity();
+                float quantity = cashierView.getAmount();
                 if(quantity <= 0 ) {
                     while (quantity <= 0) {
                         cashierView.illegalQuantity();
-                        quantity = cashierView.getQuantity();
+                        quantity = cashierView.getAmount();
                     }
                 }
                 good.setAmount(quantity);
                 goods.add(good);
-                addGoods = cashierView.wantToContinue();
+                addGoods = cashierView.wantToSmth("add more");
             }
             Order order = new Order(buyerName, goods);
             orderService.create(order);
+            cashierView.smthSeccessfuly("Order created");
         } catch (DatabaseException e) {
-            System.out.println("Internal server error. ");
-        } catch (IOError e){
-            System.out.println("Input error");
+            cashierView.databaseExceptionMessage();
+        } catch (InputMismatchException e){
+            cashierView.inputErrorMessage();
         }
     }
 
@@ -78,40 +79,42 @@ public class CashierController {
             if(order == null){
                 return;
             }
+            cashierView.print(order.toString());
             boolean editGoods = true;
             while (editGoods){
                 String name = cashierView.getGoodName();
                 List<Good> goods = order.getGoods();
-                Good searched = null;
+                Good searched = new Good();
                 for(Good good : goods){
                     if(good.getName().equals(name)){
                         searched = good;
                         goods.remove(good);
+                        break;
                     }
                 }
-                if(searched == null){
+                if(searched.isNull()){
                     cashierView.nameNotFound(name);
-                    editGoods = cashierView.wantToContinue();
+                    editGoods = cashierView.wantToSmth("enter another name?");
                     continue;
                 }
-                float quantity = cashierView.getQuantity();
+                float quantity = cashierView.getAmount();
                 if(quantity <= 0 ) {
                     while (quantity <= 0) {
                         cashierView.illegalQuantity();
-                        quantity = cashierView.getQuantity();
+                        quantity = cashierView.getAmount();
                     }
                 }
                 searched.setAmount(quantity);
                 goods.add(searched);
                 order.setGoods(goods);
-                editGoods = cashierView.wantToContinue();
+                editGoods = cashierView.wantToSmth("continue editing");
             }
             orderService.update(order.getId(), order);
-        }
-        catch (DatabaseException e) {
-            System.out.println("Internal server error. ");
-        } catch (IOError e){
-            System.out.println("Input error");
+            cashierView.smthSeccessfuly("Order edited");
+        } catch (DatabaseException e) {
+            cashierView.databaseExceptionMessage();
+        } catch (InputMismatchException e){
+            cashierView.inputErrorMessage();
         }
     }
 
@@ -121,33 +124,43 @@ public class CashierController {
             if(order == null){
                 return;
             }
+            cashierView.print(order.toString());
             OrderStatus status = cashierView.chooseStatus();
             order.setStatus(status);
             orderService.update(order.getId(), order);
-        }
-        catch (DatabaseException e) {
-            System.out.println("Internal server error. ");
-        } catch (IOError e){
-            System.out.println("Input error");
+            cashierView.smthSeccessfuly("Status edited");
+        } catch (DatabaseException e) {
+            cashierView.databaseExceptionMessage();
+        } catch (InputMismatchException e){
+            cashierView.inputErrorMessage();
         }
     }
 
     protected void findAll(){
         try {
             List<Order> orders = orderService.findAll();
-            cashierView.orderList(orders);
+            if(orders.size() == 0){
+                cashierView.print("No orders");
+            }
+            else{
+                cashierView.orderList(orders);
+            }
         }catch (DatabaseException e) {
-            System.out.println("Internal server error. ");
+            cashierView.databaseExceptionMessage();
         }
     }
 
-    protected void findByStatus(){
+    protected void findByStatus() {
         try {
             OrderStatus status = cashierView.chooseStatus();
             List<Order> orders = orderService.findByStatus(status);
-            cashierView.orderList(orders);
-        }catch (DatabaseException e) {
-            System.out.println("Internal server error. ");
+            if (orders.size() == 0) {
+                cashierView.print("No orders with this status");
+            } else {
+                cashierView.orderList(orders);
+            }
+        } catch (DatabaseException e) {
+            cashierView.databaseExceptionMessage();
         }
     }
 
@@ -156,13 +169,13 @@ public class CashierController {
         do{
             String orderId = cashierView.getOrderId();
             order = orderService.findById(orderId);
-            if(order == null){
+            if(order.isNull()){
                 cashierView.idNotFound(orderId);
-                if(!cashierView.wantToContinue()) {
+                if(!cashierView.wantToSmth("enter another id")) {
                     return null;
                 }
             }
-        }while(order == null);
+        }while(order.isNull());
         return order;
     }
 }

@@ -86,9 +86,13 @@ public class User {
     }
     public void setRole(String role) { this.role = UserRole.getRole(role); }
 
+    public boolean isNull(){
+        return (id == null && username == null && password == null && firstname == null && lastname == null && role == null);
+    }
+
     @Override
     public String toString() {
-        return "\nUser{" +
+        return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
@@ -110,4 +114,5 @@ public class User {
     public int hashCode() {
         return Objects.hash(id, username, password, firstname, lastname, role);
     }
+
 }

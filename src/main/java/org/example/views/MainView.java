@@ -24,18 +24,24 @@ public class MainView {
         System.out.println("Order with id \"" + id + "\" does not exists");
     }
 
-    public float getQuantity(){
-        System.out.println("Enter quantity: ");
-        return scanner.nextFloat();
+    public float getAmount(){
+        System.out.println("Enter amount: ");
+        float quantity = scanner.nextFloat();
+        scanner.nextLine();
+        return quantity;
     }
 
     public void illegalQuantity(){
-        System.out.println("Quantity must be a float number that greater then  0: ");
+        System.out.println("Quantity must be a float number that greater then 0!");
     }
 
-    public boolean wantToContinue(){
+    public void illegalPrice(){
+        System.out.println("Price must be a float number that greater then 0!");
+    }
+
+    public boolean wantToSmth(String smth){
         do{
-            System.out.println("Do you want to continue? (Y/N): ");
+            System.out.println("Do you want to " + smth + "? (Y/N): ");
             String line = scanner.nextLine().toLowerCase();
             switch (line){
                 case "y" -> {
@@ -49,11 +55,16 @@ public class MainView {
         while(true);
     }
 
+    public void smthSeccessfuly(String smth){
+        System.out.println(smth + " successfully!");
+    }
+
+    public void print(String str){ System.out.println(str); }
     public void databaseExceptionMessage(){
-        System.out.println("Internal server error.");
+        System.out.println("\nINTERNAL SERVER ERROR\n");
     }
 
     public void inputErrorMessage(){
-        System.out.println("Input error");
+        System.out.println("\nINPUT ERROR\n");
     }
 }

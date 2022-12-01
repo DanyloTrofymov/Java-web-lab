@@ -72,9 +72,13 @@ public class Order {
 
     public void setGoods(List<Good> goods) { this.goods = goods; }
 
+    public boolean isNull(){
+        return (id == null && buyerName == null && status == null && goods == null);
+    }
+
     @Override
     public String toString() {
-        return "\nOrder{" +
+        return "Order{" +
                 "id=" + id +
                 ", buyerName='" + buyerName + '\'' +
                 ", status=" + status +

@@ -1,14 +1,11 @@
 package org.example.views.seniorCashier;
 
-import org.example.controllers.cashier.CashierAction;
 import org.example.controllers.seniorCashier.SeniorCashierAction;
 import org.example.entities.good.GoodType;
 import org.example.entities.order.OrderStatus;
 import org.example.views.cashier.CashierView;
 
-import java.util.Collections;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class SeniorCashierView extends CashierView {
 
@@ -16,10 +13,18 @@ public class SeniorCashierView extends CashierView {
 
     public SeniorCashierAction chooseSeniorAction() {
         SeniorCashierAction action = null;
-        System.out.println("Choose action:");
+        System.out.println("\nChoose action:");
         do{
-            System.out.println("Enter number \n1: Create order\n2: Edit order\n3: Edit status\n" +
-                    "4: Find all orders\n5: Find good by status\n6: Get report \n7: Logout\n");
+            System.out.println("""
+                    Enter number:
+                    1: Create order
+                    2: Edit order
+                    3: Edit order status
+                    4: Find all orders
+                    5: Find good by status
+                    6: Get report
+                    7: Logout
+                    """);
             String line = scanner.nextLine();
             switch (line){
                 case "1" -> action = SeniorCashierAction.CREATE_ORDER;
@@ -36,9 +41,16 @@ public class SeniorCashierView extends CashierView {
     @Override
     public OrderStatus chooseStatus() {
         OrderStatus status = null;
-        System.out.println("Choose status:");
+        System.out.println("\nChoose status:");
         do{
-            System.out.println("Enter number \n1: REGISTERED,\n2: ACCEPTED\n3: DONE\n4: RETURNED\n5: DECLINED");
+            System.out.println("""
+                               Enter number:
+                               1: REGISTERED
+                               2: ACCEPTED
+                               3: DONE
+                               4: RETURNED
+                               5: DECLINED
+                               """);
             String action = scanner.nextLine();
             switch (action) {
                 case "1" -> status = OrderStatus.REGISTERED;
@@ -53,9 +65,13 @@ public class SeniorCashierView extends CashierView {
 
     public String chooseActionWithGood() {
         String action;
-        System.out.println("Choose status:");
+        System.out.println("\nChoose status:");
         do{
-            System.out.println("Enter number \n1: Edit quantity\n2: Remove\n");
+            System.out.println("""
+            Enter number:
+            1: Edit amount of good order
+            2: Remove good from order
+            """);
             action = scanner.nextLine().toLowerCase();
             if(action.equals("1")){
                 return "edit";
@@ -68,9 +84,13 @@ public class SeniorCashierView extends CashierView {
 
     public String chooseReportType() {
         String action;
-        System.out.println("Choose report type:");
+        System.out.println("\nChoose report type:");
         do{
-            System.out.println("Enter letter \nx: X-report\nz: Z-report\n");
+            System.out.println("""
+                    Enter letter:
+                    X: X-report
+                    Z: Z-report
+                    """);
             action = scanner.nextLine().toLowerCase();
             if(action.equals("x") || action.equals("z")){
                 return action;
@@ -84,10 +104,10 @@ public class SeniorCashierView extends CashierView {
         System.out.println(report);
     }
 
-    public void printZReport(Set<GoodType> countOfTypes, GoodType maxOccurredElement){
+    public void printZReport(List<GoodType> countOfTypes, GoodType maxOccurredElement){
         System.out.println("REPORT Z: \nFrequency of each category:");
-        for (GoodType type : countOfTypes) {
-            System.out.println(countOfTypes + ": " + Collections.frequency(countOfTypes, type));
+        for (GoodType type : GoodType.values()) {
+            System.out.println(type + ": " + Collections.frequency(countOfTypes, type));
         }
         System.out.println("\nThe most popular category is: " + maxOccurredElement);
     }
